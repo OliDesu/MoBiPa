@@ -23,7 +23,7 @@ environment:
 dependencies:
     flutter:
         sdk: flutter
-    # Add the dependency for the Firebase Core Flutter SDK
+    http: ^0.12.0+4
     firebase_core: "^0.7.0"
     cloud_firestore: "^0.16.0"
     firebase_auth: "^0.20.0+1"
