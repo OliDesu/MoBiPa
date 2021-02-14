@@ -19,6 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _lastNameController = TextEditingController();
+    final TextEditingController _firstNameController = TextEditingController();
+    final TextEditingController _phoneNumberController = TextEditingController();
 
     bool _success;
     String _userEmail = '';
@@ -42,21 +45,51 @@ class _RegisterPageState extends State<RegisterPage> {
                                     decoration: const InputDecoration(labelText: 'Email'),
                                     validator: (String value) {
                                         if (value.isEmpty) {
-                                            return 'Please enter some text';
+                                            return 'Veuillez entrer du texte';
                                         }
                                         return null;
                                     },
                                 ),
                                 TextFormField(
                                     controller: _passwordController,
-                                    decoration: const InputDecoration(labelText: 'Password'),
+                                    decoration: const InputDecoration(labelText: 'Mot de passe'),
                                     validator: (String value) {
                                         if (value.isEmpty) {
-                                            return 'Please enter some text';
+                                            return 'Veuillez saisir votre mot de passe';
                                         }
                                         return null;
                                     },
                                     obscureText: true,
+                                ),
+                                TextFormField(
+                                    controller: _lastNameController,
+                                    decoration: const InputDecoration(labelText: 'Nom de famille'),
+                                    validator: (String value) {
+                                        if (value.isEmpty) {
+                                            return 'Veuillez indiquer votre nom de famille';
+                                        }
+                                        return null;
+                                    },
+                                ),
+                                TextFormField(
+                                    controller: _firstNameController,
+                                    decoration: const InputDecoration(labelText: 'Prénom'),
+                                    validator: (String value) {
+                                        if (value.isEmpty) {
+                                            return 'Veuillez indiquer votre prénom';
+                                        }
+                                        return null;
+                                    },
+                                ),
+                                TextFormField(
+                                    controller: _phoneNumberController,
+                                    decoration: const InputDecoration(labelText: 'Numéro de téléphone'),
+                                    validator: (String value) {
+                                        if (value.isEmpty) {
+                                            return 'Veuillez indiquer votre numéro de téléphone';
+                                        }
+                                        return null;
+                                    },
                                 ),
                                 Container(
                                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -102,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
             password: _passwordController.text,
         ))
             .user;
-        Utilisateur newUtilisateur = Utilisateur(user.uid,'test','test','06');
+        Utilisateur newUtilisateur = Utilisateur(user.uid,_firstNameController.text,_lastNameController.text,_phoneNumberController.text);
         FirebaseFirestore.instance.collection('utilisateur').doc(user.uid).set(newUtilisateur.toJson());
         if (user != null) {
             setState(() {
