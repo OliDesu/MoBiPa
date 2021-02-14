@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/button_builder.dart';
+import 'package:app/Models/utilisateur.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -100,6 +102,8 @@ class _RegisterPageState extends State<RegisterPage> {
             password: _passwordController.text,
         ))
             .user;
+        Utilisateur newUtilisateur = Utilisateur(user.uid,'test','test','06');
+        FirebaseFirestore.instance.collection('utilisateur').doc(user.uid).set(newUtilisateur.toJson());
         if (user != null) {
             setState(() {
                 _success = true;
@@ -107,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
             });
         } else {
             _success = false;
+
         }
     }
 }
