@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
         Utilisateur newUtilisateur = Utilisateur(user.uid,_firstNameController.text,_lastNameController.text,_phoneNumberController.text);
         FirebaseFirestore.instance.collection('utilisateur').doc(user.uid).set(newUtilisateur.toJson());
         if (user != null) {
-            firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${Path.basename(_image.path)}');
+            firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${user.uid}');
             firebase_storage.UploadTask uploadTask = ref.putFile(_image);
             uploadTask.whenComplete(() =>
                 setState(() {
