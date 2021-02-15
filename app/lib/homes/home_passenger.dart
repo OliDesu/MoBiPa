@@ -162,12 +162,11 @@ class _PassengerHomeState extends State<PassengerHome> {
                     MaterialPageRoute(
                       builder: (context) {
                         return PlacePicker(
-                          apiKey: 'AIzaSyA_urDwozM-H397Dp0uof3Us1zx3oo1aOQ',
+                          apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
                           initialPosition: _PassengerHomeState.kInitialPosition,
                           useCurrentLocation: true,
                           selectInitialPosition: true,
-
-                          //usePlaceDetailSearch: true,
+                          usePlaceDetailSearch: true,
                           onPlacePicked: (result) {
                             selectedPlace = result;
                             Navigator.of(context).pop();
