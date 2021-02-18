@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'homes/home_driver.dart';
 import 'homes/home_passenger.dart';
 import './main.dart';
 
