@@ -91,6 +91,12 @@ class _PassengerHomeState extends State<PassengerHome> {
     super.dispose();
   }
 
+  void pushPage(BuildContext context, Widget page) {
+    Navigator.of(context) /*!*/ .push(
+      MaterialPageRoute<void>(builder: (_) => page),
+    );
+  }
+
   String text = "Ajouter une map ici ";
   @override
   Widget build(BuildContext context) {
@@ -133,6 +139,32 @@ class _PassengerHomeState extends State<PassengerHome> {
                         Navigator.pop(context);
                       }),
                   new ListTile(
+                    leading: new Icon(Icons.map),
+                    title: Text('Choisir une adresse de rendez vous'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PlacePicker(
+                              apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+                              initialPosition:
+                                  _PassengerHomeState.kInitialPosition,
+                              useCurrentLocation: true,
+                              selectInitialPosition: true,
+                              usePlaceDetailSearch: true,
+                              onPlacePicked: (result) {
+                                selectedPlace = result;
+                                Navigator.of(context).pop();
+                                setState(() {});
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  new ListTile(
                       leading: new Icon(Icons.settings),
                       title: Text('Paramètres'),
                       onTap: () {
@@ -154,30 +186,6 @@ class _PassengerHomeState extends State<PassengerHome> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(
-                child: Text("Load Google Map"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return PlacePicker(
-                          apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
-                          initialPosition: _PassengerHomeState.kInitialPosition,
-                          useCurrentLocation: true,
-                          selectInitialPosition: true,
-                          usePlaceDetailSearch: true,
-                          onPlacePicked: (result) {
-                            selectedPlace = result;
-                            Navigator.of(context).pop();
-                            setState(() {});
-                          },
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
               selectedPlace == null
                   ? Container()
                   : Text(selectedPlace.formattedAddress ?? ""),
