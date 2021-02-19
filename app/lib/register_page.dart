@@ -28,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final TextEditingController _lastNameController = TextEditingController();
     final TextEditingController _firstNameController = TextEditingController();
     final TextEditingController _phoneNumberController = TextEditingController();
+    String _accountType;
 
     firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instanceFor();
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images');
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ))
             .user;
         Utilisateur newUtilisateur = Utilisateur(user.uid,_firstNameController.text,_lastNameController.text,_phoneNumberController.text);
-        FirebaseFirestore.instance.collection('utilisateur').doc(user.uid).set(newUtilisateur.toJson());
+        FirebaseFirestore.instance.collection(_accountType).doc(user.uid).set(newUtilisateur.toJson());
         if (user != null) {
             firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${user.uid}');
             firebase_storage.UploadTask uploadTask = ref.putFile(_image);
@@ -157,6 +158,31 @@ class _RegisterPageState extends State<RegisterPage> {
                                 validator: (String value) {
                                     if (value.isEmpty) {
                                         return 'Veuillez indiquer votre numéro de téléphone';
+                                    }
+                                    return null;
+                                },
+                            ),
+                            DropdownButtonFormField(
+                                decoration: const InputDecoration(labelText: 'Quel type de compte'),
+                                value: _accountType,
+                                items: <DropdownMenuItem>[
+                                    DropdownMenuItem(
+                                        child: Text('Passager'),
+                                        value: 'utilisateur',
+                                    ),
+                                    DropdownMenuItem(
+                                        child: Text('Conducteur'),
+                                        value: 'conducteur',
+                                    ),
+                                ],
+                                onChanged: (value) {
+                                    setState(() {
+                                        _accountType = value;
+                                    });
+                                },
+                                validator: (dynamic value) {
+                                    if (value.toString().isEmpty) {
+                                        return 'Veuillez indiquer le type de compte';
                                     }
                                     return null;
                                 },
