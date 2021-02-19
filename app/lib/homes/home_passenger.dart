@@ -1,10 +1,17 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:app/Models/firebaseRequest.dart';
+import 'package:app/Models/utilisateur.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:app/Models/firebaseRequest.dart';
 
 class PassengerHome extends StatefulWidget {
   @override
@@ -30,6 +37,43 @@ class _PassengerHomeState extends State<PassengerHome> {
   void pushPage(BuildContext context, Widget page) {
     Navigator.of(context) /*!*/ .push(
       MaterialPageRoute<void>(builder: (_) => page),
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Popup example'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Voulez vous valider ce trajet ? "),
+          Text("Départ : " + selectedPlaceStart.formattedAddress ?? ""),
+          Text("Arrivée : " + selectedPlaceEnd.formattedAddress ?? ""),
+        ],
+      ),
+      actions: <Widget>[
+        new ElevatedButton(
+          onPressed: () {
+            if (selectedPlaceStart != null && selectedPlaceEnd != null) {
+              FirebaseRequest order = new FirebaseRequest(
+                  selectedPlaceStart.formattedAddress,
+                  selectedPlaceEnd.formattedAddress);
+              FirebaseFirestore.instance
+                  .collection('requests')
+                  .doc(FirebaseAuth.instance.currentUser.uid)
+                  .set(order.toJson());
+            }
+          },
+          child: const Text('Valider'),
+        ),
+        new ElevatedButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Annuler'),
+        ),
+      ],
     );
   }
 
@@ -107,8 +151,14 @@ class _PassengerHomeState extends State<PassengerHome> {
                                         usePlaceDetailSearch: true,
                                         onPlacePicked: (result) {
                                           selectedPlaceEnd = result;
+
                                           Navigator.of(context).pop();
                                           setState(() {});
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                _buildPopupDialog(context),
+                                          );
                                         },
                                       );
                                     },
@@ -140,21 +190,15 @@ class _PassengerHomeState extends State<PassengerHome> {
         ),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              selectedPlaceStart == null
-                  ? Container()
-                  : Text("Adresse de départ : " +
-                          selectedPlaceStart.formattedAddress ??
-                      ""),
-              selectedPlaceEnd == null
-                  ? Container()
-                  : Text("Adresse d'arrivée : " +
-                          selectedPlaceEnd.formattedAddress ??
-                      "")
-            ],
-          ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    child: ElevatedButton(
+                  onPressed: () async {},
+                  child: Text('Valider'),
+                ))
+              ]),
         ));
   }
 }
