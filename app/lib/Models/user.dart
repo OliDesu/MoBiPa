@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/Models/utilisateur.dart';
+import 'package:app/Models/driver.dart';
 
 class UserRepo with ChangeNotifier{
     Utilisateur connectedUtilisateur;
-
-    void studentLogin(Utilisateur loggedInUtilisateur) {
-        connectedUtilisateur = loggedInUtilisateur;
-        notifyListeners();
-    }
+    Driver connectedDriver;
 
     void updateUtilisateur(String field, String updateValue) {
         FirebaseFirestore.instance
@@ -28,6 +25,29 @@ class UserRepo with ChangeNotifier{
             }
             print("Update $field : $updateValue");
             notifyListeners();
+        }).catchError((onError) {
+            print("onError");
+        });
+    }
+
+    void updateDriver(String field, String updateValue) {
+        FirebaseFirestore.instance
+            .collection('conducteur')
+            .doc(connectedDriver.userId)
+            .update({field: updateValue}).then((result) {
+                switch (field) {
+                    case "firstName" :
+                        connectedDriver.firstName = updateValue;
+                        break;
+                    case "lastName" :
+                        connectedDriver.lastName = updateValue;
+                        break;
+                    case "tel" :
+                        connectedDriver.tel = updateValue;
+                        break;
+                }
+                print("Update $field : $updateValue");
+                notifyListeners();
         }).catchError((onError) {
             print("onError");
         });
