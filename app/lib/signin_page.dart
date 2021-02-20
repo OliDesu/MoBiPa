@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'homes/home_passenger.dart';
+import 'homes/home_driver.dart';
 import './main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -153,7 +154,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           content: Text('${user.email} signed in'),
         ),
       );
-      _pushPage(context, PassengerHome());
+      _pushPage(context, DriverHome());
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         const SnackBar(

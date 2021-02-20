@@ -192,13 +192,7 @@ class _PassengerHomeState extends State<PassengerHome> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    child: ElevatedButton(
-                  onPressed: () async {},
-                  child: Text('Valider'),
-                ))
-              ]),
+              children: <Widget>[]),
         ));
   }
 }
