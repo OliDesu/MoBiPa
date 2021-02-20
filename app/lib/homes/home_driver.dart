@@ -20,17 +20,14 @@ class UserList extends StatefulWidget {
 }
 
 class _DriverHomeState extends State<DriverHome> {
-  StreamSubscription _locationSubscription;
-  Location _locationTracker = Location();
   Marker marker;
   Circle circle;
-  GoogleMapController _controller;
+
   final firestoreInstance = FirebaseFirestore.instance;
-  final String apiUrl = "https://randomuser.me/api/?results=10";
 
   List<dynamic> orders = [];
 
-  void fetchUsers() async {
+  void fetchOrders() async {
     var result = FirebaseFirestore.instance.collection('requests');
     firestoreInstance.collection("requests").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {});
@@ -40,26 +37,7 @@ class _DriverHomeState extends State<DriverHome> {
     });
   }
 
-  static final CameraPosition initialLocation = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  Future<Uint8List> getMarker() async {
-    ByteData byteData =
-        await DefaultAssetBundle.of(context).load("assets/car_icon.png");
-    return byteData.buffer.asUint8List();
-  }
-
-  @override
-  void dispose() {
-    if (_locationSubscription != null) {
-      _locationSubscription.cancel();
-    }
-    super.dispose();
-  }
-
-  String text = "Ajouter une map ici ";
+  String text = "Ajouter actualités ici ";
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -96,7 +74,9 @@ class _DriverHomeState extends State<DriverHome> {
                       title: Text('Trajets disponibles'),
                       onTap: () {
                         setState(() {
-                          Text('Ajouter test');
+                          fetchOrders();
+                          text = orders.toString();
+                          print(orders);
                         });
                         Navigator.pop(context);
                       }),
@@ -117,11 +97,8 @@ class _DriverHomeState extends State<DriverHome> {
         appBar: new AppBar(
           title: new Text("Bienvenue **Ajouter nom utilisateur**"),
         ),
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[]),
+        body: new Center(
+          child: new Text((text)),
         ));
   }
 }

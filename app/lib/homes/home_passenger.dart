@@ -54,11 +54,12 @@ class _PassengerHomeState extends State<PassengerHome> {
       ),
       actions: <Widget>[
         new ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (selectedPlaceStart != null && selectedPlaceEnd != null) {
               FirebaseRequest order = new FirebaseRequest(
                   selectedPlaceStart.formattedAddress,
                   selectedPlaceEnd.formattedAddress);
+              await order.getName(FirebaseAuth.instance.currentUser.uid);
               FirebaseFirestore.instance
                   .collection('requests')
                   .doc(FirebaseAuth.instance.currentUser.uid)
@@ -188,11 +189,8 @@ class _PassengerHomeState extends State<PassengerHome> {
         appBar: new AppBar(
           title: new Text("Bienvenue **Ajouter nom utilisateur**"),
         ),
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[]),
+        body: new Center(
+          child: new Text((text)),
         ));
   }
 }

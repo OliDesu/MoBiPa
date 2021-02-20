@@ -16,21 +16,6 @@ class FirebaseRequest {
     this.destination = destination;
     this.status = 'open';
     this.date = DateFormat('y/MM/dd HH:mm').format(new DateTime.now());
-
-    FirebaseFirestore.instance
-        .collection('utilisateur')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((value) {
-      this.firstName = value.data()['firstName'];
-    });
-    FirebaseFirestore.instance
-        .collection('utilisateur')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((value) {
-      this.lastName = value.data()['lastName'];
-    });
   }
 
   factory FirebaseRequest.fromJson(Map<String, dynamic> json) {
@@ -51,5 +36,22 @@ class FirebaseRequest {
         .collection('requests')
         .doc(FirebaseAuth.instance.currentUser.uid)
         .update({field: updateValue});
+  }
+
+  Future<bool> getName(String userId) async {
+    return FirebaseFirestore.instance
+        .collection('utilisateur')
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        this.firstName = documentSnapshot.data()['firstName'];
+        this.lastName = documentSnapshot.data()['lastName'];
+        return true;
+      } else {
+        print('Document does not exist in the database');
+        return false;
+      }
+    });
   }
 }

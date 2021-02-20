@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -154,7 +156,16 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           content: Text('${user.email} signed in'),
         ),
       );
-      _pushPage(context, DriverHome());
+      // Ajouter le choix d'identification
+      DocumentSnapshot utilisateur = await FirebaseFirestore.instance
+          .collection('utilisateur')
+          .doc(user.uid)
+          .get();
+      if (utilisateur.exists) {
+        _pushPage(context, PassengerHome());
+      } else {
+        _pushPage(context, DriverHome());
+      }
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         const SnackBar(
