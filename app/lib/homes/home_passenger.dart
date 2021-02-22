@@ -12,6 +12,8 @@ import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:app/Models/firebaseRequest.dart';
+import 'package:app/Models/user.dart' as repo;
+import 'package:provider/provider.dart';
 
 class PassengerHome extends StatefulWidget {
   @override
@@ -60,10 +62,11 @@ class _PassengerHomeState extends State<PassengerHome> {
                   selectedPlaceStart.formattedAddress,
                   selectedPlaceEnd.formattedAddress);
               await order.getName(FirebaseAuth.instance.currentUser.uid);
-              FirebaseFirestore.instance
+              DocumentReference ref = await FirebaseFirestore.instance
                   .collection('requests')
-                  .doc(FirebaseAuth.instance.currentUser.uid)
-                  .set(order.toJson());
+                  .add(order.toJson());
+              Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.requests.add(ref.id);
+              Provider.of<repo.UserRepo>(this.context, listen: false).updateRequestsUtilisateur();
             }
           },
           child: const Text('Valider'),

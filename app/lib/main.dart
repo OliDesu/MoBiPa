@@ -1,9 +1,15 @@
+import 'package:app/Models/utilisateurRepository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_builder.dart';
+import 'package:provider/provider.dart';
 
 import './register_page.dart';
 import './signin_page.dart';
+
+import 'package:app/Models/user.dart';
+import 'package:app/Models/utilisateurRepository.dart';
+import 'package:app/Models/driverRepository.dart';
 
 Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +25,24 @@ Future<void> main() async {
 class AuthExampleApp extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
-        return MaterialApp(
-            title: 'Firebase Example App',
-            theme: ThemeData.dark(),
-            home: Scaffold(
-                body: AuthTypeSelector(),
+        return MultiProvider(
+            providers: [
+                ChangeNotifierProvider<UserRepo>(
+                    create:(_) => UserRepo()
+                ),
+                ChangeNotifierProvider<UtilisateurRepository>(
+                    create: (_) => UtilisateurRepository(),
+                ),
+                ChangeNotifierProvider<DriverRepository>(
+                    create: (_) => DriverRepository(),
+                ),
+            ],
+            child: MaterialApp(
+                title: 'Firebase Example App',
+                theme: ThemeData.dark(),
+                home: Scaffold(
+                    body: AuthTypeSelector(),
+                ),
             ),
         );
     }
