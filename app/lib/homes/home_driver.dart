@@ -23,19 +23,6 @@ class _DriverHomeState extends State<DriverHome> {
   Marker marker;
   Circle circle;
 
-  final firestoreInstance = FirebaseFirestore.instance;
-
-  List<dynamic> orders = [];
-
-  void fetchOrders() async {
-    var result = FirebaseFirestore.instance.collection('requests');
-    firestoreInstance.collection("requests").get().then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {});
-    });
-    setState(() {
-      orders = result as List;
-    });
-  }
 
   String text = "Ajouter actualités ici ";
   @override
@@ -73,12 +60,15 @@ class _DriverHomeState extends State<DriverHome> {
                       leading: new Icon(Icons.directions_car),
                       title: Text('Trajets disponibles'),
                       onTap: () {
-                        setState(() {
-                          fetchOrders();
-                          text = orders.toString();
-                          print(orders);
-                        });
-                        Navigator.pop(context);
+                          Navigator.pop(context);
+                        return StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance.collection('requests').snapshots(),
+                            builder: (context, snapshot) {
+                                if (!snapshot.hasData) return LinearProgressIndicator();
+
+                                return _buildList(context, snapshot.data.docs);
+                            },
+                        );
                       }),
                   new ListTile(
                       leading: new Icon(Icons.settings),
@@ -101,4 +91,55 @@ class _DriverHomeState extends State<DriverHome> {
           child: new Text((text)),
         ));
   }
+
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
+      return ListView(
+          padding: const EdgeInsets.only(top: 20.0),
+          children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      );
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+      final record = Record.fromSnapshot(data);
+
+      return Padding(
+          key: ValueKey(record.firstName),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: ListTile(
+                  title: Text(record.firstName),
+                  trailing: Text(record.lastName),
+                  onTap: () => print(record),
+              ),
+          ),
+      );
+  }
+}
+
+class Record {
+    final String firstName;
+    final String lastName;
+    final String start;
+    final String destination;
+    final DocumentReference reference;
+
+    Record.fromMap(Map<String, dynamic> map, {this.reference})
+        : assert(map['firstName'] != null),
+            assert(map['lastName'] != null),
+            assert(map['start'] != null),
+            assert(map['destination'] != null),
+            firstName = map['firstName'],
+            lastName = map['lastName'],
+            start = map['start'],
+            destination = map['destination'];
+
+    Record.fromSnapshot(DocumentSnapshot snapshot)
+        : this.fromMap(snapshot.data(), reference: snapshot.reference);
+
+    @override
+    String toString() => "Trajet<$firstName $lastName\n$start - $destination>";
 }
