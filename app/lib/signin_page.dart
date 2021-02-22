@@ -1,9 +1,18 @@
+import 'package:app/Models/utilisateurRepository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'homes/home_passenger.dart';
+import 'homes/home_driver.dart';
+import 'package:app/Models/user.dart' as reposit;
+import 'package:app/Models/utilisateur.dart';
+import 'package:app/Models/driver.dart';
 import './main.dart';
+import 'package:provider/provider.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -153,7 +162,28 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           content: Text('${user.email} signed in'),
         ),
       );
-      _pushPage(context, PassengerHome());
+      // Ajouter le choix d'identification
+      DocumentSnapshot utilisateur = await FirebaseFirestore.instance
+          .collection('utilisateur')
+          .doc(user.uid)
+          .get();
+      if (utilisateur.exists) {
+          Utilisateur newUtilisateur = Utilisateur.fromJson(utilisateur.data());
+          Provider.of<reposit.UserRepo>(context, listen: false).utilisateurLogin(newUtilisateur);
+        _pushPage(context, PassengerHome());
+      } else {
+          DocumentSnapshot driver = await FirebaseFirestore.instance
+              .collection('conducteur')
+              .doc(user.uid)
+              .get();
+          if (driver.exists) {
+              Driver newDriver = Driver.fromJson(driver.data());
+              Provider.of<reposit.UserRepo>(context, listen: false).driverLogin(newDriver);
+              _pushPage(context, DriverHome());
+          } else {
+              throw 'Error: user not found';
+          }
+      }
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         const SnackBar(

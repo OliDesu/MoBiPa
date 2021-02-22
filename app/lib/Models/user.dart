@@ -7,6 +7,16 @@ class UserRepo with ChangeNotifier{
     Utilisateur connectedUtilisateur;
     Driver connectedDriver;
 
+    void utilisateurLogin(Utilisateur loggedIn){
+        connectedUtilisateur = loggedIn;
+        notifyListeners();
+    }
+
+    void driverLogin(Driver loggedIn){
+        connectedDriver = loggedIn;
+        notifyListeners();
+    }
+
     void updateUtilisateur(String field, String updateValue) {
         FirebaseFirestore.instance
             .collection('utilisateur')
@@ -23,10 +33,20 @@ class UserRepo with ChangeNotifier{
                     connectedUtilisateur.tel = updateValue;
                     break;
             }
-            print("Update $field : $updateValue");
             notifyListeners();
         }).catchError((onError) {
-            print("onError");
+            print(onError.toString());
+        });
+    }
+
+    void updateRequestsUtilisateur() {
+        FirebaseFirestore.instance
+            .collection('utilisateur')
+            .doc(connectedUtilisateur.userId)
+            .update({"requests": FieldValue.arrayUnion(connectedUtilisateur.requests)}).then((result) {
+            notifyListeners();
+        }).catchError((onError) {
+            print(onError.toString());
         });
     }
 
