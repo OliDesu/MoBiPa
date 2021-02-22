@@ -62,7 +62,7 @@ class _DriverHomeState extends State<DriverHome> {
                       onTap: () {
                           Navigator.pop(context);
                         return StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance.collection('requests').snapshots(),
+                            stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
                             builder: (context, snapshot) {
                                 if (!snapshot.hasData) return LinearProgressIndicator();
 
