@@ -39,28 +39,31 @@ class _ListPageStates extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
-    return Container(
-      child: FutureBuilder(
-          future: fetchOrders(),
-          // ignore: non_constant_identifier_names
-          builder: (_,snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(
-            child: Text("Loading ...")
-          );
-        } else{
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (_, index){
-            return ListTile(
-              title: Text(snapshot.data[index].data["start"]),
-
-            );
-              });
-        }
-      }),
+    return new Scaffold(
+      body :
+     Container(
+    child: FutureBuilder(
+    future: fetchOrders(),
+    // ignore: non_constant_identifier_names
+    builder: (_,snapshot){
+    if(snapshot.connectionState == ConnectionState.waiting){
+    return Center(
+    child: Text("Loading ...")
     );
+    } else{
+    return ListView.builder(
+    itemCount: snapshot.data.length,
+    itemBuilder: (_, index){
+    return ListTile(
+    title: Text(snapshot.data[index]["start"]),
+
+    );
+    });
+    }
+    }),
+    ),
+    );
+
   }
 
 
