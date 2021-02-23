@@ -127,7 +127,40 @@ class _DriverHomeState extends State<DriverHome> {
                   child: ListTile(
                       title: Text(record.firstName + ' ' + record.lastName),
                       subtitle: Text(record.start + ' - ' + record.destination),
-                      onTap: () => print(record),
+                      onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                  title: Text("Validez-vous ce trajet ?"),
+                                  content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                          Text("Passager : ${record
+                                              .firstName} ${record.lastName}"),
+                                          Text("Départ : ${record.start}"),
+                                          Text("Arrivée : ${record.destination}"),
+                                      ],
+                                  ),
+                                  actions: <Widget>[
+                                      ElevatedButton(
+                                          onPressed: () async {
+                                              await record.reference.update(
+                                                  {'status': 'processing'});
+                                              Navigator.of(context).pop();
+                                          },
+                                          child: Text("Valider"),
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                              Navigator.of(context).pop();
+                                          },
+                                          child: Text("Annuler"),
+                                      ),
+                                  ],
+                              ),
+                          );
+                      },
                   ),
               ),
           ),
