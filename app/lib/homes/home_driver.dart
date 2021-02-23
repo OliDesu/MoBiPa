@@ -7,6 +7,8 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:app/Models/user.dart' as repo;
+import 'package:provider/provider.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -183,7 +185,7 @@ class _DriverHomeState extends State<DriverHome> {
           ),
         ),
         appBar: new AppBar(
-          title: new Text("Bienvenue ${FirebaseFirestore.instance.collection('conducteur').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) => value.data()['firstName'])}"),
+          title: new Text("Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedDriver.firstName}"),
         ),
         body: new Center(
           child: new Text((text)),
