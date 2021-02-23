@@ -147,6 +147,8 @@ class _DriverHomeState extends State<DriverHome> {
                                           onPressed: () async {
                                               await record.reference.update(
                                                   {'status': 'processing'});
+                                              await record.reference.update(
+                                                  {'driverId': FirebaseAuth.instance.currentUser.uid });
                                               Navigator.of(context).pop();
                                           },
                                           child: Text("Valider"),

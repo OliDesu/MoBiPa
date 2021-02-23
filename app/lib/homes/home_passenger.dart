@@ -68,6 +68,7 @@ class _PassengerHomeState extends State<PassengerHome> {
               Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.requests.add(ref.id);
               Provider.of<repo.UserRepo>(this.context, listen: false).updateRequestsUtilisateur();
             }
+            Navigator.of(context).pop();
           },
           child: const Text('Valider'),
         ),
