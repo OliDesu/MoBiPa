@@ -38,51 +38,59 @@ class _DriverHomeState extends State<DriverHome> {
               ))),
               new Container(
                 child: new Column(children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.info),
-                      title: Text('Mon compte'),
-                      onTap: () {
-                        setState(() {
-                          text = "Ajouter interface compte";
-                        });
-                        Navigator.pop(context);
-                      }),
-                  new ListTile(
-                      leading: new Icon(Icons.list),
-                      title: Text('Mes trajets'),
-                      onTap: () {
-                        setState(() {
-                          text = "Ajouter interface trajets";
-                        });
-                        Navigator.pop(context);
-                      }),
-                    new ListTile(
-                        leading: new Icon(Icons.directions_car),
-                        title: Text('Trajets disponibles'),
-                        onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (context) {
-                                        return StreamBuilder<QuerySnapshot>(
-                                            stream: FirebaseFirestore.instance.collection('requests').snapshots(),
-                                            builder: (context, snapshot) {
-                                                if (!snapshot.hasData) return LinearProgressIndicator();
-                                                return _buildList(context, snapshot.data.docs);
-                                            },
-                                        );
-                                    }
-                                ),
-                            );
-                        }),
-                  new ListTile(
-                      leading: new Icon(Icons.settings),
-                      title: Text('Paramètres'),
-                      onTap: () {
-                        setState(() {
-                          text = "Ajouter interface paramètres";
-                        });
-                        Navigator.pop(context);
-                      }),
+                    Material(
+                        child: ListTile(
+                            leading: new Icon(Icons.info),
+                            title: Text('Mon compte'),
+                            onTap: () {
+                                setState(() {
+                                    text = "Ajouter interface compte";
+                                });
+                                Navigator.pop(context);
+                            }),
+                    ),
+                  Material(
+                      child: ListTile(
+                          leading: new Icon(Icons.list),
+                          title: Text('Mes trajets'),
+                          onTap: () {
+                              setState(() {
+                                  text = "Ajouter interface trajets";
+                              });
+                              Navigator.pop(context);
+                          }),
+                  ),
+                    Material(
+                        child: ListTile(
+                            leading: new Icon(Icons.directions_car),
+                            title: Text('Trajets disponibles'),
+                            onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(
+                                        builder: (context) {
+                                            return StreamBuilder<QuerySnapshot>(
+                                                stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
+                                                builder: (context, snapshot) {
+                                                    if (!snapshot.hasData) return LinearProgressIndicator();
+                                                    return _buildList(context, snapshot.data.docs);
+                                                },
+                                            );
+                                        }
+                                    ),
+                                );
+                            }),
+                    ),
+                  Material(
+                      child: ListTile(
+                          leading: new Icon(Icons.settings),
+                          title: Text('Paramètres'),
+                          onTap: () {
+                              setState(() {
+                                  text = "Ajouter interface paramètres";
+                              });
+                              Navigator.pop(context);
+                          }),
+                  ),
                 ]),
               )
             ],
@@ -100,6 +108,7 @@ class _DriverHomeState extends State<DriverHome> {
       return ListView(
           padding: const EdgeInsets.only(top: 20.0),
           children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+
       );
   }
 
@@ -112,12 +121,14 @@ class _DriverHomeState extends State<DriverHome> {
           child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(5.0),
+                  borderRadius: BorderRadius.circular(8.0),
               ),
-              child: ListTile(
-                  title: Text(record.firstName),
-                  trailing: Text(record.lastName),
-                  onTap: () => print(record),
+              child: Material(
+                  child: ListTile(
+                      title: Text(record.firstName + ' ' + record.lastName),
+                      subtitle: Text(record.start + ' - ' + record.destination),
+                      onTap: () => print(record),
+                  ),
               ),
           ),
       );
