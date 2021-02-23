@@ -56,20 +56,24 @@ class _DriverHomeState extends State<DriverHome> {
                         });
                         Navigator.pop(context);
                       }),
-                  new ListTile(
-                      leading: new Icon(Icons.directions_car),
-                      title: Text('Trajets disponibles'),
-                      onTap: () {
-                          Navigator.pop(context);
-                        return StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
-                            builder: (context, snapshot) {
-                                if (!snapshot.hasData) return LinearProgressIndicator();
-
-                                return _buildList(context, snapshot.data.docs);
-                            },
-                        );
-                      }),
+                    new ListTile(
+                        leading: new Icon(Icons.directions_car),
+                        title: Text('Trajets disponibles'),
+                        onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) {
+                                        return StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance.collection('requests').snapshots(),
+                                            builder: (context, snapshot) {
+                                                if (!snapshot.hasData) return LinearProgressIndicator();
+                                                return _buildList(context, snapshot.data.docs);
+                                            },
+                                        );
+                                    }
+                                ),
+                            );
+                        }),
                   new ListTile(
                       leading: new Icon(Icons.settings),
                       title: Text('Paramètres'),
@@ -85,7 +89,7 @@ class _DriverHomeState extends State<DriverHome> {
           ),
         ),
         appBar: new AppBar(
-          title: new Text("Bienvenue **Ajouter nom utilisateur**"),
+          title: new Text("Bienvenue ${FirebaseFirestore.instance.collection('conducteur').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) => value.data()['firstName'])}"),
         ),
         body: new Center(
           child: new Text((text)),
