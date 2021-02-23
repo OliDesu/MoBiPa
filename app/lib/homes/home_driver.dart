@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -19,6 +20,53 @@ class UserList extends StatefulWidget {
   }
 }
 
+
+// ignore: must_be_immutable
+class _ListPageStates extends StatelessWidget{
+  @override
+
+ var firestoreInstance = FirebaseFirestore.instance;
+
+  List<dynamic> orders = [];
+
+  Future fetchOrders() async {
+    QuerySnapshot qn = await firestoreInstance
+        .collection('requests')
+        .where('status',isEqualTo: 'open')
+        .get();
+    return qn.docs;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      child: FutureBuilder(
+          future: fetchOrders(),
+          // ignore: non_constant_identifier_names
+          builder: (_,snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Center(
+            child: Text("Loading ...")
+          );
+        } else{
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (_, index){
+            return ListTile(
+              title: Text(snapshot.data[index].data["start"]),
+
+            );
+              });
+        }
+      }),
+    );
+  }
+
+
+
+
+}
 class _DriverHomeState extends State<DriverHome> {
   Marker marker;
   Circle circle;
@@ -27,14 +75,9 @@ class _DriverHomeState extends State<DriverHome> {
 
   List<dynamic> orders = [];
 
-  void fetchOrders() async {
-    var result = FirebaseFirestore.instance.collection('requests');
-    firestoreInstance.collection("requests").get().then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {});
-    });
-    setState(() {
-      orders = result as List;
-    });
+  Future fetchOrders() async {
+    QuerySnapshot qn = await firestoreInstance.collection("requests").get();
+    return qn.docs;
   }
 
   String text = "Ajouter actualités ici ";
@@ -73,12 +116,10 @@ class _DriverHomeState extends State<DriverHome> {
                       leading: new Icon(Icons.directions_car),
                       title: Text('Trajets disponibles'),
                       onTap: () {
-                        setState(() {
-                          fetchOrders();
-                          text = orders.toString();
-                          print(orders);
-                        });
-                        Navigator.pop(context);
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => _ListPageStates()),
+                      );
                       }),
                   new ListTile(
                       leading: new Icon(Icons.settings),
