@@ -10,11 +10,15 @@ class FirebaseRequest {
   String status;
   String start;
   String destination;
+  String driverId;
+  String passengerId;
 
   FirebaseRequest(String start, String destination) {
     this.start = start;
     this.destination = destination;
     this.status = 'open';
+    this.passengerId = FirebaseAuth.instance.currentUser.uid;
+    this.driverId = null;
     this.date = DateFormat('y/MM/dd HH:mm').format(new DateTime.now());
   }
 
@@ -28,6 +32,8 @@ class FirebaseRequest {
         'date': date,
         'status': status,
         'start': start,
+        'driverId': driverId,
+        'passengerId': passengerId,
         'destination': destination
       };
 
