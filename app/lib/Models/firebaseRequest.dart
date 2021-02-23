@@ -60,4 +60,30 @@ class FirebaseRequest {
       }
     });
   }
+
+
+  Future<bool> getRequest() async {
+    return FirebaseFirestore.instance
+        .collection('requests')
+        .where('status',isEqualTo: 'open')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+          this.firstName=querySnapshot.docs.first.data()['firstName'];
+          this.lastName=querySnapshot.docs.first.data()['lastName'];
+          this.destination=querySnapshot.docs.first.data()['destination'];
+          this.date=querySnapshot.docs.first.data()['date'];
+          this.start=querySnapshot.docs.first.data()['start'];
+
+
+        return true;
+      } else {
+        print('Document does not exist in the database');
+        return false;
+      }
+    });
+  }
+
+
+
 }
