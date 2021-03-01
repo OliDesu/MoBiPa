@@ -30,13 +30,31 @@ class _AccountState extends State<Account> {
   final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+    initData();
+
+
+  }
+  Future <void>initData() async{
+  final User user = _auth.currentUser;
+  DocumentSnapshot utilisateur = await FirebaseFirestore.instance
+      .collection('utilisateur')
+      .doc(user.uid)
+      .get();
+  if (utilisateur.exists) {
     _emailController.text = FirebaseAuth.instance.currentUser.email;
     _firstNameController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName;
     _lastNameController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.lastName;
     _phoneNumberController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.tel;
   }
+  else{
+    _emailController.text = FirebaseAuth.instance.currentUser.email;
+    _firstNameController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedDriver.firstName;
+    _lastNameController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedDriver.lastName;
+    _phoneNumberController.text = Provider.of<repo.UserRepo>(this.context, listen: false).connectedDriver.tel;
+  }
+}
 
   void pushPage(BuildContext context, Widget page) {
     Navigator.of(context) /*!*/ .push(
