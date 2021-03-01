@@ -195,10 +195,17 @@ class _DriverHomeState extends State<DriverHome> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
-      return ListView(
-          padding: const EdgeInsets.only(top: 20.0),
-          children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      return Scaffold(
+        appBar: new AppBar(
+          title : Text("Trajets disponibles"),
+        ),
+        body:
 
+        ListView(
+            padding: const EdgeInsets.only(top: 20.0),
+            children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+
+        ),
       );
   }
 
