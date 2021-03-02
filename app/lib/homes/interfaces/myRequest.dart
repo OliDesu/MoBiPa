@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_signin_button/button_builder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
@@ -25,11 +23,24 @@ class MyRequest extends StatefulWidget {
 }
 
 class _MyRequestState extends State<MyRequest> {
+    Completer<GoogleMapController> _controller = Completer();
 
     Driver driver;
     String imageUrl;
     bool _successDriver = false;
     bool _successImage = false;
+
+    static final CameraPosition _kGooglePlex = CameraPosition(
+        target: LatLng(37.42796133580664, -122.085749655962),
+        zoom: 14.4746,
+    );
+
+    static final CameraPosition _kLake = CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(37.43296265331129, -122.08832357078792),
+        tilt: 59.440717697143555,
+        zoom: 19.151926040649414
+    );
 
     @override
     Widget build(BuildContext context) {
@@ -78,6 +89,12 @@ class _MyRequestState extends State<MyRequest> {
                         borderRadius: BorderRadius.circular(8.0),
                     ),
                     height: MediaQuery.of(context).size.height/2,
+                    child: GoogleMap(
+                        initialCameraPosition: _kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                        },
+                    ),
                 ),
                 Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown,),
                 Container(
