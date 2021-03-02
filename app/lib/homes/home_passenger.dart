@@ -189,10 +189,25 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
         ),
         appBar: new AppBar(
-          title: new Text("Bienvenue **Ajouter nom utilisateur**"),
+          title: new Text("Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName}"),
         ),
         body: new Center(
-          child: new Text((text)),
+          child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('requests')
+                  .where('passengerId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+                  .where('status', isEqualTo: 'processing')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+                  else {
+                      if (snapshot.data.size == 0){
+                          return Text('RAS');
+                      }
+                      return Text('On vous prend en charge !');
+                  }
+              },
+          ),
         ));
   }
 }
