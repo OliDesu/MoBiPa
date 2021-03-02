@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
+import 'package:app/homes/interfaces/account.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -112,6 +113,11 @@ class _DriverHomeState extends State<DriverHome> {
   Circle circle;
 
 
+  void pushPage(BuildContext context, Widget page) {
+    Navigator.of(context) /*!*/ .push(
+      MaterialPageRoute<void>(builder: (_) => page),
+    );
+  }
   String text = "Ajouter actualités ici ";
   @override
   Widget build(BuildContext context) {
@@ -131,12 +137,11 @@ class _DriverHomeState extends State<DriverHome> {
                             leading: new Icon(Icons.info),
                             title: Text('Mon compte'),
                             onTap: () {
-                                setState(() {
-                                    text = "Ajouter interface compte";
-                                });
-                                Navigator.pop(context);
+                            pushPage(context,Account());
                             }),
-                    ),
+
+                            ),
+
                   Material(
                       child: ListTile(
                           leading: new Icon(Icons.list),
@@ -193,10 +198,17 @@ class _DriverHomeState extends State<DriverHome> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
-      return ListView(
-          padding: const EdgeInsets.only(top: 20.0),
-          children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      return Scaffold(
+        appBar: new AppBar(
+          title : Text("Trajets disponibles"),
+        ),
+        body:
 
+        ListView(
+            padding: const EdgeInsets.only(top: 20.0),
+            children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+
+        ),
       );
   }
 

@@ -14,6 +14,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
+import 'package:app/homes/interfaces/account.dart';
 
 class PassengerHome extends StatefulWidget {
   @override
@@ -100,10 +101,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                       leading: new Icon(Icons.info),
                       title: Text('Mon compte'),
                       onTap: () {
-                        setState(() {
-                          text = "Ajouter interface compte";
-                        });
-                        Navigator.pop(context);
+                        pushPage(context,Account());
                       }),
                   new ListTile(
                       leading: new Icon(Icons.list),
