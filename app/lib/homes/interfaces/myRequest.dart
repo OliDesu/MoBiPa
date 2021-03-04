@@ -30,17 +30,8 @@ class _MyRequestState extends State<MyRequest> {
     bool _successDriver = false;
     bool _successImage = false;
 
-    static final CameraPosition _kGooglePlex = CameraPosition(
-        target: LatLng(37.42796133580664, -122.085749655962),
-        zoom: 14.4746,
-    );
+    Map<String, Marker> _markers = {};
 
-    static final CameraPosition _kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(37.43296265331129, -122.08832357078792),
-        tilt: 59.440717697143555,
-        zoom: 19.151926040649414
-    );
 
     @override
     Widget build(BuildContext context) {
@@ -71,6 +62,29 @@ class _MyRequestState extends State<MyRequest> {
 
     Widget _buildColumn(BuildContext context, DocumentSnapshot data) {
         Record record = Record.fromSnapshot(data);
+        void _onMapCreated(GoogleMapController controller) {
+            _markers.clear();
+            setState(() {
+                final startMarker = Marker(
+                    markerId: MarkerId('depart'),
+                    position: LatLng(record.startLat, record.startLon),
+                    infoWindow: InfoWindow(
+                        title: 'départ',
+                        snippet: record.start,
+                    ),
+                );
+                _markers['depart'] = startMarker;
+                final destinationMarker = Marker(
+                    markerId: MarkerId('Arrivee'),
+                    position: LatLng(record.destinationLat, record.destinationLon),
+                    infoWindow: InfoWindow(
+                        title: 'Arrivée',
+                        snippet: record.destination,
+                    ),
+                );
+                _markers['Arrivee'] = destinationMarker;
+            });
+        }
 
         _getDriver(record.driverId);
 
@@ -90,10 +104,13 @@ class _MyRequestState extends State<MyRequest> {
                     ),
                     height: MediaQuery.of(context).size.height/2,
                     child: GoogleMap(
-                        initialCameraPosition: _kGooglePlex,
-                        onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
-                        },
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(record.startLat, record.startLon),
+                            zoom: 14.4746,
+                        ),
+                        markers: _markers.values.toSet(),
+                        myLocationButtonEnabled: true,
                     ),
                 ),
                 Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown,),
@@ -137,6 +154,10 @@ class Record {
     final String lastName;
     final String start;
     final String destination;
+    final double startLat;
+    final double startLon;
+    final double destinationLat;
+    final double destinationLon;
     final String driverId;
     final DocumentReference reference;
 
@@ -146,10 +167,18 @@ class Record {
             assert(map['start'] != null),
             assert(map['destination'] != null),
             assert(map['driverId'] != null),
+            assert(map['startLat'] != null),
+            assert(map['startLon'] != null),
+            assert(map['destinationLat'] != null),
+            assert(map['destinationLon'] != null),
             firstName = map['firstName'],
             lastName = map['lastName'],
             start = map['start'],
             destination = map['destination'],
+            startLat = map['startLat'],
+            startLon = map['startLon'],
+            destinationLat = map['destinationLat'],
+            destinationLon = map['destinationLon'],
             driverId = map['driverId'];
 
     Record.fromSnapshot(DocumentSnapshot snapshot)

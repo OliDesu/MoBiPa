@@ -62,7 +62,11 @@ class _PassengerHomeState extends State<PassengerHome> {
             if (selectedPlaceStart != null && selectedPlaceEnd != null) {
               FirebaseRequest order = new FirebaseRequest(
                   selectedPlaceStart.formattedAddress,
-                  selectedPlaceEnd.formattedAddress);
+                  selectedPlaceEnd.formattedAddress,
+                  selectedPlaceStart.geometry.location.lat,
+                  selectedPlaceStart.geometry.location.lng,
+                  selectedPlaceEnd.geometry.location.lat,
+                  selectedPlaceEnd.geometry.location.lng);
               await order.getName(FirebaseAuth.instance.currentUser.uid);
               DocumentReference ref = await FirebaseFirestore.instance
                   .collection('requests')

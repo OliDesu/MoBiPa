@@ -10,12 +10,28 @@ class FirebaseRequest {
   String status;
   String start;
   String destination;
+  double startLat;
+  double startLon;
+  double destinationLat;
+  double destinationLon;
+  double passengerLat;
+  double passengerLon;
+  double driverLat;
+  double driverLon;
   String driverId;
   String passengerId;
 
-  FirebaseRequest(String start, String destination) {
+  FirebaseRequest(String start, String destination, double startLat, double startLon, double destinationLat, double destinationLon) {
     this.start = start;
     this.destination = destination;
+    this.startLat = startLat;
+    this.startLon = startLon;
+    this.destinationLat = destinationLat;
+    this.destinationLon = destinationLon;
+    this.passengerLat = null;
+    this.passengerLon = null;
+    this.driverLat = null;
+    this.driverLon = null;
     this.status = 'open';
     this.passengerId = FirebaseAuth.instance.currentUser.uid;
     this.driverId = null;
@@ -23,7 +39,7 @@ class FirebaseRequest {
   }
 
   factory FirebaseRequest.fromJson(Map<String, dynamic> json) {
-    return FirebaseRequest(json['start'], json['destination']);
+    return FirebaseRequest(json['start'], json['destination'], json['startLat'], json['startLon'], json['destinationLat'], json['destinationLon']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -34,7 +50,15 @@ class FirebaseRequest {
         'start': start,
         'driverId': driverId,
         'passengerId': passengerId,
-        'destination': destination
+        'destination': destination,
+        'startLat': startLat,
+        'startLon': startLon,
+        'destinationLat': destinationLat,
+        'destinationLon': destinationLon,
+        'passengerLat': passengerLat,
+        'passengerLon': passengerLon,
+        'driverLat': driverLat,
+        'driverLon': driverLon
       };
 
   void updateFirebaseRequest(String field, String updateValue) {
@@ -74,6 +98,14 @@ class FirebaseRequest {
           this.destination=querySnapshot.docs.first.data()['destination'];
           this.date=querySnapshot.docs.first.data()['date'];
           this.start=querySnapshot.docs.first.data()['start'];
+          this.startLat=querySnapshot.docs.first.data()['startLat'];
+          this.startLon=querySnapshot.docs.first.data()['startLon'];
+          this.destinationLat=querySnapshot.docs.first.data()['destinationLat'];
+          this.destinationLon=querySnapshot.docs.first.data()['destinationLon'];
+          this.passengerLat=querySnapshot.docs.first.data()['passengerLat'];
+          this.passengerLon=querySnapshot.docs.first.data()['passengerLon'];
+          this.driverLat=querySnapshot.docs.first.data()['driverLat'];
+          this.driverLat=querySnapshot.docs.first.data()['driverLon'];
 
 
         return true;
