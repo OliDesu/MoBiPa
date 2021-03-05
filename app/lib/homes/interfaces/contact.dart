@@ -1,20 +1,7 @@
-import 'dart:async';
-import 'dart:typed_data';
-import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/utilisateur.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_signin_button/button_builder.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/user.dart' as repo;
-import 'package:provider/provider.dart';
+import 'package:contactus/contactus.dart';
 
 class Contact extends StatefulWidget {
   @override
@@ -41,15 +28,36 @@ class _Contact extends State<Contact> {
 
   @override
   Widget build(BuildContext context) {
+
     return new Scaffold(
 
         appBar: new AppBar(
-          title: new Text("Contacts"),
+    title: new Text("Interface compte "),
+    ),
+    body: new MaterialApp(
+
+          debugShowCheckedModeBanner: true,
+          home: Scaffold(
+
+            backgroundColor: Colors.white12,
+            body: ContactUs(
+              cardColor: Colors.white,
+              textColor: Colors.teal.shade900,
+              logo: AssetImage('assets/mobipa.png'),
+              email: 'mobipa@gmail.com',
+              companyName: 'MobiPA',
+              companyColor: Colors.white,
+              phoneNumber: '+XXXXXXXXX',
+              website: 'https://mobipa.univ-grenoble-alpes.fr/',
+              githubUserName: 'https://github.com/OliDesu/MoBiPa',
+
+              tagLine: 'La Mure',
+              taglineColor: Colors.white30,
+
+            ),
+          ),
         ),
-        body: new Container(
-          child: Text('Chatte'),
-        )
-            );
+    );
 
   }
 }
