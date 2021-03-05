@@ -61,10 +61,10 @@ class FirebaseRequest {
         'driverLon': driverLon
       };
 
-  void updateFirebaseRequest(String field, String updateValue) {
+  void updateFirebaseRequest(String field, String updateValue, String id) {
     FirebaseFirestore.instance
         .collection('requests')
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(id)
         .update({field: updateValue});
   }
 

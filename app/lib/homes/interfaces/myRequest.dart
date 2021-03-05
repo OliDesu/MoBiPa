@@ -14,6 +14,7 @@ import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/Models/driver.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class MyRequest extends StatefulWidget {
@@ -23,7 +24,6 @@ class MyRequest extends StatefulWidget {
 }
 
 class _MyRequestState extends State<MyRequest> {
-    Completer<GoogleMapController> _controller = Completer();
 
     Driver driver;
     String imageUrl;
@@ -31,7 +31,8 @@ class _MyRequestState extends State<MyRequest> {
     bool _successImage = false;
 
     Map<String, Marker> _markers = {};
-
+    GoogleMapController _controller;
+    Location _location = Location();
 
     @override
     Widget build(BuildContext context) {
@@ -62,14 +63,16 @@ class _MyRequestState extends State<MyRequest> {
 
     Widget _buildColumn(BuildContext context, DocumentSnapshot data) {
         Record record = Record.fromSnapshot(data);
+
         void _onMapCreated(GoogleMapController controller) {
+            _controller = controller;
             _markers.clear();
             setState(() {
                 final startMarker = Marker(
                     markerId: MarkerId('depart'),
                     position: LatLng(record.startLat, record.startLon),
                     infoWindow: InfoWindow(
-                        title: 'départ',
+                        title: 'Départ',
                         snippet: record.start,
                     ),
                 );
@@ -83,6 +86,17 @@ class _MyRequestState extends State<MyRequest> {
                     ),
                 );
                 _markers['Arrivee'] = destinationMarker;
+            });
+
+            _location.onLocationChanged().listen((l) {
+                FirebaseFirestore.instance
+                    .collection('requests')
+                    .doc(record.reference.id)
+                    .update({'passengerLat': l.latitude});
+                FirebaseFirestore.instance
+                    .collection('requests')
+                    .doc(record.reference.id)
+                    .update({'passengerLon': l.longitude});
             });
         }
 
@@ -107,24 +121,46 @@ class _MyRequestState extends State<MyRequest> {
                         onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                             target: LatLng(record.startLat, record.startLon),
-                            zoom: 14.4746,
+                            zoom: 15,
                         ),
                         markers: _markers.values.toSet(),
-                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
                     ),
                 ),
-                Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown,),
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Colors.grey,
-                                width: 0.2,
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Votre conducteur : ',textScaleFactor: 1.2, textAlign: TextAlign.start),
+                ),
+                Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
+                Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.2,
+                                ),
                             ),
-                        )
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                                Text(driver.firstName + ' ' + driver.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                Text('Téléphone : ' + driver.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                            ],
+                        ),
                     ),
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(driver.firstName + ' ' + driver.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                        ElevatedButton(
+                            onPressed: () => launch("tel://"+driver.tel),
+                            child: Text("Appeler"),
+                        ),
+                    ],
                 ),
             ],
         );
