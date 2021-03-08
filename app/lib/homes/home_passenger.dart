@@ -17,6 +17,7 @@ import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
+import 'package:app/homes/interfaces/myRequest.dart';
 
 class PassengerHome extends StatefulWidget {
   @override
@@ -62,7 +63,11 @@ class _PassengerHomeState extends State<PassengerHome> {
             if (selectedPlaceStart != null && selectedPlaceEnd != null) {
               FirebaseRequest order = new FirebaseRequest(
                   selectedPlaceStart.formattedAddress,
-                  selectedPlaceEnd.formattedAddress);
+                  selectedPlaceEnd.formattedAddress,
+                  selectedPlaceStart.geometry.location.lat,
+                  selectedPlaceStart.geometry.location.lng,
+                  selectedPlaceEnd.geometry.location.lat,
+                  selectedPlaceEnd.geometry.location.lng);
               await order.getName(FirebaseAuth.instance.currentUser.uid);
               DocumentReference ref = await FirebaseFirestore.instance
                   .collection('requests')
@@ -164,10 +169,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                       leading: new Icon(Icons.list),
                       title: Text('Mes trajets'),
                       onTap: () {
-                        setState(() {
-                          text = "Ajouter interface trajets";
-                        });
-                        Navigator.pop(context);
+                        pushPage(context, MyRequest());
                       }),
                   new ListTile(
                       leading: new Icon(Icons.directions_car),
@@ -412,4 +414,5 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
         ])));
   }
+
 }
