@@ -19,7 +19,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 /// Entrypoint example for various sign-in flows with Firebase.
 class SignInPage extends StatefulWidget {
   /// The page title.
-  final String title = 'Sign In & Out';
+  final String title = 'Espace de connexion';
 
   @override
   State<StatefulWidget> createState() => _SignInPageState();
@@ -29,12 +29,15 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
+        backgroundColor: Colors.white38,
         actions: <Widget>[
           Builder(builder: (BuildContext context) {
             return FlatButton(
-              textColor: Theme.of(context).buttonColor,
+              textColor: Colors.black,
               onPressed: () async {
                 final User user = _auth.currentUser;
                 if (user == null) {
@@ -59,6 +62,10 @@ class _SignInPageState extends State<SignInPage> {
         return ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
+        Container(
+        child: new Column(children: [
+        Image(image: AssetImage('assets/signin.png')),
+        ])),
             _EmailPasswordForm(),
           ],
         );
@@ -91,17 +98,21 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+
+
         key: _formKey,
         child: Card(
+          color: Color.fromRGBO(123, 75, 227, 1),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
+
                   alignment: Alignment.center,
                   child: const Text(
-                    'Sign in with email and password',
+                    'Connexion',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -109,15 +120,15 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email'),
                   validator: (String value) {
-                    if (value.isEmpty) return 'Please enter some text';
+                    if (value.isEmpty) return 'Veuillez entrer votre Email';
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Mot de passe'),
                   validator: (String value) {
-                    if (value.isEmpty) return 'Please enter some text';
+                    if (value.isEmpty) return 'Veuillez entrer votre mot de passe';
                     return null;
                   },
                   obscureText: true,
@@ -125,14 +136,36 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                 Container(
                   padding: const EdgeInsets.only(top: 16),
                   alignment: Alignment.center,
-                  child: SignInButton(
-                    Buttons.Email,
-                    text: 'Sign In',
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        await _signInWithEmailAndPassword();
-                      }
-                    },
+
+                  child: Container(
+                      height: 60.0,
+                      margin: EdgeInsets.all(10),
+                      child : Center(
+                        child: RaisedButton(
+                          onPressed: () async {if (_formKey.currentState.validate()) {await _signInWithEmailAndPassword();}},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(80.0)),
+                          padding: EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xff6720fa), Color(0xff9670e6)],                        begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                                borderRadius: BorderRadius.circular(30.0)),
+                            child: Container(
+                              constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Suivant",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+
                   ),
                 ),
               ],
