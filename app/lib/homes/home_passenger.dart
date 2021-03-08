@@ -29,10 +29,12 @@ class _PassengerHomeState extends State<PassengerHome> {
 
   PickResult selectedPlaceStart;
   PickResult selectedPlaceEnd;
-  static final CameraPosition initialLocation = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+
+  Location location = new Location();
+
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
 
   Future<Uint8List> getMarker() async {
     ByteData byteData =
@@ -78,6 +80,31 @@ class _PassengerHomeState extends State<PassengerHome> {
                   .add(ref.id);
               Provider.of<repo.UserRepo>(this.context, listen: false)
                   .updateRequestsUtilisateur();
+
+              _serviceEnabled = await location.serviceEnabled();
+              if (!_serviceEnabled) {
+                  _serviceEnabled = await location.requestService();
+                  if(!_serviceEnabled) {
+                      return;
+                  }
+              }
+
+              _permissionGranted = await location.hasPermission();
+              if (_permissionGranted == PermissionStatus.DENIED) {
+                  _permissionGranted = await location.requestPermission();
+                  if (_permissionGranted != PermissionStatus.GRANTED) {
+                      return;
+                  }
+              }
+
+              _locationData = await location.getLocation();
+
+              await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
+                  {'passengerLat': _locationData.latitude});
+
+              await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
+                  {'passengerLon': _locationData.longitude});
+
             }
             Navigator.of(context).pop();
           },

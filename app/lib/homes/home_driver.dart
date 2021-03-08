@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/data_management.dart';
+import 'package:app/homes/interfaces/doRequest.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -122,6 +123,12 @@ class _DriverHomeState extends State<DriverHome> {
   bool descTextShowFlag = false;
   bool descTextShowFlag1 = false;
 
+  Location location = new Location();
+
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
+
   void pushPage(BuildContext context, Widget page) {
     Navigator.of(context) /*!*/ .push(
       MaterialPageRoute<void>(builder: (_) => page),
@@ -156,10 +163,7 @@ class _DriverHomeState extends State<DriverHome> {
                           leading: new Icon(Icons.list),
                           title: Text('Mes trajets'),
                           onTap: () {
-                              setState(() {
-                                  text = "Ajouter interface trajets";
-                              });
-                              Navigator.pop(context);
+                              pushPage(context, DoRequest());
                           }),
                   ),
                     Material(
@@ -418,6 +422,28 @@ class _DriverHomeState extends State<DriverHome> {
                                                   {'status': 'processing'});
                                               await record.reference.update(
                                                   {'driverId': FirebaseAuth.instance.currentUser.uid });
+
+                                              _serviceEnabled = await location.serviceEnabled();
+                                              if (!_serviceEnabled) {
+                                                  _serviceEnabled = await location.requestService();
+                                                  if(!_serviceEnabled) {
+                                                      return;
+                                                  }
+                                              }
+
+                                              _permissionGranted = await location.hasPermission();
+                                              if (_permissionGranted == PermissionStatus.DENIED) {
+                                                  _permissionGranted = await location.requestPermission();
+                                                  if (_permissionGranted != PermissionStatus.GRANTED) {
+                                                      return;
+                                                  }
+                                              }
+
+                                              _locationData = await location.getLocation();
+                                              await record.reference.update(
+                                                  {'driverLat': _locationData.latitude});
+                                              await record.reference.update(
+                                                  {'driverLon': _locationData.longitude});
                                               Navigator.of(context).pop();
                                           },
                                           child: Text("Valider"),

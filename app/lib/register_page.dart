@@ -7,6 +7,7 @@ import 'package:app/Models/utilisateur.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as Path;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,8 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
     firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instanceFor();
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images');
 
-    File _image;
-    String _uploadedFileURL;
+    File _cropped;
 
     bool _success;
     String _userEmail = '';
@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
         FirebaseFirestore.instance.collection(_accountType).doc(user.uid).set(newUtilisateur.toJson());
         if (user != null) {
             firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${user.uid}');
-            firebase_storage.UploadTask uploadTask = ref.putFile(_image);
+            firebase_storage.UploadTask uploadTask = ref.putFile(_cropped);
             uploadTask.whenComplete(() =>
                 setState(() {
                     _success = true;
@@ -187,9 +187,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     return null;
                                 },
                             ),
-                            _image != null ? Image.asset(_image.path, height: 150,)
+                            _cropped != null ? Image.file(_cropped, height: 100, width: 100,)
                                 :Container(),
-                            _image == null ? ElevatedButton(onPressed: chooseFile, child: Text('Choisissez une photo de profil'))
+                            _cropped == null ? ElevatedButton(onPressed: chooseFile, child: Text('Choisissez une photo de profil'))
                                 :Container(),
                             Container(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -221,10 +221,22 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     Future chooseFile() async {
-        await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-            setState(() {
-              _image = image;
+        File _image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+        if (_image != null){
+            File cropped = await ImageCropper.cropImage(
+                sourcePath: _image.path,
+                aspectRatio: CropAspectRatio(
+                    ratioX: 1, ratioY: 1),
+                compressQuality: 100,
+                maxWidth: 700,
+                maxHeight: 700,
+                compressFormat: ImageCompressFormat.jpg
+            );
+
+            this.setState(() {
+                _cropped = cropped;
             });
-        });
+        }
     }
 }
