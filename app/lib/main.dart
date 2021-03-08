@@ -59,11 +59,11 @@ class AuthTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white38,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white38,
-        title: new Text('Espace de connexion', textAlign: TextAlign.center),
+        title: new Text('Acceuil', textAlign: TextAlign.center),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +78,7 @@ class AuthTypeSelector extends StatelessWidget {
             '\n Bienvenue sur MobiPA \n',
             textAlign: TextAlign.center,
             style: GoogleFonts.raleway(
-              fontSize: 32,
+              fontSize: 32,color: Colors.black,
             ),
           ))),
           Container(
