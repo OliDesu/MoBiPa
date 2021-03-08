@@ -3,7 +3,6 @@ import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,17 +17,17 @@ import 'package:app/Models/driver.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class MyRequest extends StatefulWidget {
+class DoRequest extends StatefulWidget {
 
     @override
-    _MyRequestState createState() => new _MyRequestState();
+    _DoRequestState createState() => new _DoRequestState();
 }
 
-class _MyRequestState extends State<MyRequest> {
+class _DoRequestState extends State<DoRequest> {
 
-    Driver driver;
+    Utilisateur passenger;
     String imageUrl;
-    bool _successDriver = false;
+    bool _successPassenger = false;
     bool _successImage = false;
 
     Map<String, Marker> _markers = {};
@@ -45,7 +44,7 @@ class _MyRequestState extends State<MyRequest> {
                 child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('requests')
-                        .where('passengerId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+                        .where('driverId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
                         .where('status', isEqualTo: 'processing')
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -87,29 +86,29 @@ class _MyRequestState extends State<MyRequest> {
                     ),
                 );
                 _markers['Arrivee'] = destinationMarker;
-                final driverMarker = Marker(
-                    markerId: MarkerId('driver'),
-                    position: LatLng(record.driverLat, record.driverLon),
-                    icon: BitmapDescriptor.fromAsset('assets/car_icon.png'),
+                final passengerMarker = Marker(
+                    markerId: MarkerId('passenger'),
+                    position: LatLng(record.passengerLat, record.passengerLon),
+                    icon: BitmapDescriptor.fromAsset('assets/direction_icon.png'),
                 );
-                _markers['driver'] = driverMarker;
+                _markers['passenger'] = passengerMarker;
             });
 
             _location.onLocationChanged().listen((l) {
                 FirebaseFirestore.instance
                     .collection('requests')
                     .doc(record.reference.id)
-                    .update({'passengerLat': l.latitude});
+                    .update({'driverLat': l.latitude});
                 FirebaseFirestore.instance
                     .collection('requests')
                     .doc(record.reference.id)
-                    .update({'passengerLon': l.longitude});
+                    .update({'driverLon': l.longitude});
             });
         }
 
-        _getDriver(record.driverId);
+        _getPassenger(record.passengerId);
 
-        if (!_successDriver || !_successImage) {
+        if (!_successPassenger || !_successImage) {
             return Center(
                 child: CircularProgressIndicator(),
             );
@@ -154,8 +153,8 @@ class _MyRequestState extends State<MyRequest> {
                         child:  Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                                Text(driver.firstName + ' ' + driver.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                                Text('Téléphone : ' + driver.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                Text(passenger.firstName + ' ' + passenger.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                Text('Téléphone : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
                             ],
                         ),
                     ),
@@ -164,7 +163,7 @@ class _MyRequestState extends State<MyRequest> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                         ElevatedButton(
-                            onPressed: () => launch("tel://"+driver.tel),
+                            onPressed: () => launch("tel://"+passenger.tel),
                             child: Text("Appeler"),
                         ),
                     ],
@@ -173,16 +172,16 @@ class _MyRequestState extends State<MyRequest> {
         );
     }
 
-    Future<void> _getDriver(String driverId) async {
-        await FirebaseFirestore.instance.collection('conducteur').doc(driverId).get()
+    Future<void> _getPassenger(String passengerId) async {
+        await FirebaseFirestore.instance.collection('utilisateur').doc(passengerId).get()
             .then((value) {
             setState(() {
-                driver = Driver.fromJson(value.data());
-                _successDriver = true;
+                passenger = Utilisateur.fromJson(value.data());
+                _successPassenger = true;
             });
         });
 
-        await firebase_storage.FirebaseStorage.instance.ref().child('images/'+driverId).getDownloadURL()
+        await firebase_storage.FirebaseStorage.instance.ref().child('images/'+passengerId).getDownloadURL()
             .then((value) {
             setState(() {
                 imageUrl = value;
@@ -201,9 +200,9 @@ class Record {
     final double startLon;
     final double destinationLat;
     final double destinationLon;
-    final double driverLat;
-    final double driverLon;
-    final String driverId;
+    final double passengerLat;
+    final double passengerLon;
+    final String passengerId;
     final DocumentReference reference;
 
     Record.fromMap(Map<String, dynamic> map, {this.reference})
@@ -211,13 +210,13 @@ class Record {
             assert(map['lastName'] != null),
             assert(map['start'] != null),
             assert(map['destination'] != null),
-            assert(map['driverId'] != null),
+            assert(map['passengerId'] != null),
             assert(map['startLat'] != null),
             assert(map['startLon'] != null),
             assert(map['destinationLat'] != null),
             assert(map['destinationLon'] != null),
-            assert(map['driverLat'] != null),
-            assert(map['driverLon'] != null),
+            assert(map['passengerLat'] != null),
+            assert(map['passengerLon'] != null),
             firstName = map['firstName'],
             lastName = map['lastName'],
             start = map['start'],
@@ -226,9 +225,9 @@ class Record {
             startLon = map['startLon'],
             destinationLat = map['destinationLat'],
             destinationLon = map['destinationLon'],
-            driverId = map['driverId'],
-            driverLat = map['driverLat'],
-            driverLon = map['driverLon'];
+            passengerId = map['passengerId'],
+            passengerLat = map['passengerLat'],
+            passengerLon = map['passengerLon'];
 
     Record.fromSnapshot(DocumentSnapshot snapshot)
         : this.fromMap(snapshot.data(), reference: snapshot.reference);
