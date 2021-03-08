@@ -135,7 +135,7 @@ class _DoRequestState extends State<DoRequest> {
                 ),
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Votre conducteur : ',textScaleFactor: 1.2, textAlign: TextAlign.start),
+                    child: Text('Votre passager : ',textScaleFactor: 1.2, textAlign: TextAlign.start),
                 ),
                 Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
                 Padding(
