@@ -15,6 +15,7 @@ import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
+import 'package:app/homes/interfaces/myRequest.dart';
 
 class PassengerHome extends StatefulWidget {
   @override
@@ -61,7 +62,11 @@ class _PassengerHomeState extends State<PassengerHome> {
             if (selectedPlaceStart != null && selectedPlaceEnd != null) {
               FirebaseRequest order = new FirebaseRequest(
                   selectedPlaceStart.formattedAddress,
-                  selectedPlaceEnd.formattedAddress);
+                  selectedPlaceEnd.formattedAddress,
+                  selectedPlaceStart.geometry.location.lat,
+                  selectedPlaceStart.geometry.location.lng,
+                  selectedPlaceEnd.geometry.location.lat,
+                  selectedPlaceEnd.geometry.location.lng);
               await order.getName(FirebaseAuth.instance.currentUser.uid);
               DocumentReference ref = await FirebaseFirestore.instance
                   .collection('requests')
@@ -107,10 +112,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                       leading: new Icon(Icons.list),
                       title: Text('Mes trajets'),
                       onTap: () {
-                        setState(() {
-                          text = "Ajouter interface trajets";
-                        });
-                        Navigator.pop(context);
+                        pushPage(context, MyRequest());
                       }),
                   new ListTile(
                       leading: new Icon(Icons.directions_car),
@@ -192,22 +194,8 @@ class _PassengerHomeState extends State<PassengerHome> {
           title: new Text("Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName}"),
         ),
         body: new Center(
-          child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('requests')
-                  .where('passengerId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                  .where('status', isEqualTo: 'processing')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                  if (!snapshot.hasData) return LinearProgressIndicator();
-                  else {
-                      if (snapshot.data.size == 0){
-                          return Text('RAS');
-                      }
-                      return Text('On vous prend en charge !');
-                  }
-              },
-          ),
+          child: Text(text),
         ));
   }
+
 }
