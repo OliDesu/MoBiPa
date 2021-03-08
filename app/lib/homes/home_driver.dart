@@ -10,6 +10,8 @@ import 'package:location/location.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
+import 'package:app/homes/interfaces/contact.dart';
+import 'package:app/homes/interfaces/data_management.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -111,7 +113,14 @@ class _ListPageStates extends StatelessWidget {
 class _DriverHomeState extends State<DriverHome> {
   Marker marker;
   Circle circle;
+  final String description =
+      " En plus d'être une plateforme de transport solidaire, MobiPA offre la possibilité de vous accompagner dans vos premières démarches. N'hésitez pas à nous poser vos questions ! ";
+  final String description1 =
+      "La nouvelle plateforme MobiPA est là pour aider au maximum les personnes agées dans le besoin à se déplacer sur des trajets court.  ";
 
+  @override
+  bool descTextShowFlag = false;
+  bool descTextShowFlag1 = false;
 
   void pushPage(BuildContext context, Widget page) {
     Navigator.of(context) /*!*/ .push(
@@ -190,11 +199,171 @@ class _DriverHomeState extends State<DriverHome> {
           ),
         ),
         appBar: new AppBar(
-          title: new Text("Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedDriver.firstName}"),
+          title: new Text(
+              "Bienvenue "),
         ),
-        body: new Center(
-          child: new Text((text)),
-        ));
+        body: new SingleChildScrollView(
+            child: Column(children: [
+              Container(
+                child: Text(
+                  'Actualités',
+                  style: TextStyle(height: 2, fontSize: 30),
+                ),
+              ),
+              Container(
+                  child: new Column(children: [
+                    Image(image: AssetImage('assets/voiture.png')),
+                  ])),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    new Container(
+                        child: new Column(children: [
+                          Text(
+                            'Besoin de plus d\'informations ?',
+                            style: TextStyle(height: 2, fontSize: 25),
+                          ),
+                        ])),
+                    Container(
+                      margin: EdgeInsets.all(16.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(description,
+                              maxLines: descTextShowFlag ? 8 : 1,
+                              textAlign: TextAlign.start),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                descTextShowFlag = !descTextShowFlag;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                descTextShowFlag
+                                    ? Text(
+                                  "Moins afficher",
+                                  style: TextStyle(color: Colors.white38),
+                                )
+                                    : Text("Tout afficher",
+                                    style: TextStyle(color: Colors.white38))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        child: Row(children: <Widget>[
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.white)),
+                            color: Colors.grey,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(8.0),
+                            onPressed: () {
+                              pushPage(context, Contact());
+                            },
+                            child: Text(
+                              "     Contactez nous    ".toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.white)),
+                            color: Colors.grey,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(8.0),
+                            onPressed: () {
+                              pushPage(context, Data_Management());
+
+                            },
+                            child: Text(
+                              "Utilisation des données".toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ])),
+                    Container(
+                      child: Text('\n'),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  child: new Column(children: [
+                    Image(image: AssetImage('assets/beneficiaire.jpg')),
+                  ])),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    new Container(
+                        child: new Column(children: [
+                          Text(
+                            'Les Bénéficiaires',
+                            style: TextStyle(height: 2, fontSize: 25),
+                          ),
+                        ])),
+                    Container(
+                      margin: EdgeInsets.all(16.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(description1,
+                              maxLines: descTextShowFlag1 ? 8 : 1,
+                              textAlign: TextAlign.start),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                descTextShowFlag1 = !descTextShowFlag1;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                descTextShowFlag1
+                                    ? Text(
+                                  "Moins afficher",
+                                  style: TextStyle(color: Colors.white38),
+                                )
+                                    : Text("Tout afficher",
+                                    style: TextStyle(color: Colors.white38))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        child: Row(children: <Widget>[
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.white)),
+                            color: Colors.grey,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(8.0),
+                            onPressed: () {},
+                            child: Text(
+                              "     Devenir un passager   ".toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ])),
+                  ],
+                ),
+              ),
+            ])));
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
