@@ -89,7 +89,7 @@ class _DoRequestState extends State<DoRequest> {
                 final passengerMarker = Marker(
                     markerId: MarkerId('passenger'),
                     position: LatLng(record.passengerLat, record.passengerLon),
-                    icon: BitmapDescriptor.fromAsset('assets/direction_icon.png'),
+                    icon: BitmapDescriptor.fromAsset('assets/directon_icon.png'),
                 );
                 _markers['passenger'] = passengerMarker;
             });
