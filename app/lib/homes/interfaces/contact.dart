@@ -36,7 +36,7 @@ class _Contact extends State<Contact> {
     ),
     body: new MaterialApp(
 
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
 
             backgroundColor: Colors.white12,
