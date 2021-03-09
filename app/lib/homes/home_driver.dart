@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:app/widget/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,7 @@ class _DriverHomeState extends State<DriverHome> {
   @override
   bool descTextShowFlag = false;
   bool descTextShowFlag1 = false;
+  final ThemeData Theme = buildTheme();
 
   Location location = new Location();
 
@@ -152,6 +154,7 @@ class _DriverHomeState extends State<DriverHome> {
                         child: ListTile(
                             leading: new Icon(Icons.info),
                             title: Text('Mon compte'),
+
                             onTap: () {
                             pushPage(context,Account());
                             }),
@@ -207,7 +210,9 @@ class _DriverHomeState extends State<DriverHome> {
               "Bienvenue "),
         ),
         body: new SingleChildScrollView(
+
             child: Column(children: [
+
               Container(
                 child: Text(
                   'Actualités',
@@ -371,6 +376,7 @@ class _DriverHomeState extends State<DriverHome> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
+
       return Scaffold(
         appBar: new AppBar(
           title : Text("Trajets disponibles"),

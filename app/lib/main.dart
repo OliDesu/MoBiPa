@@ -1,4 +1,5 @@
 import 'package:app/Models/utilisateurRepository.dart';
+import 'package:app/widget/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_builder.dart';
@@ -24,6 +25,8 @@ Future<void> main() async {
 ///
 /// Returns a [MaterialApp].
 class AuthExampleApp extends StatelessWidget {
+  final ThemeData Theme = buildTheme();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -38,7 +41,7 @@ class AuthExampleApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Firebase Example App',
-        theme: ThemeData.dark(),
+        theme: Theme,
         home: Scaffold(
           body: AuthTypeSelector(),
         ),
@@ -55,17 +58,18 @@ class AuthTypeSelector extends StatelessWidget {
       MaterialPageRoute<void>(builder: (_) => page),
     );
   }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: Colors.white,
+
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white38,
         title: new Text('Acceuil', textAlign: TextAlign.center),
       ),
       body: Column(
+
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
