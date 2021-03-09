@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,7 @@ import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/Models/driver.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:ui' as ui;
 
 
 class DoRequest extends StatefulWidget {
@@ -33,6 +35,20 @@ class _DoRequestState extends State<DoRequest> {
     Map<String, Marker> _markers = {};
     GoogleMapController _controller;
     Location _location = Location();
+
+    Uint8List mapsMarkerIcon;
+    Uint8List passengerMarkerIcon;
+
+    @override
+  void initState() {
+    super.initState();
+    loadMarkers();
+  }
+
+    void loadMarkers() async {
+        mapsMarkerIcon = await getBytesFromAsset('assets/maps_marker.png', 100);
+        passengerMarkerIcon = await getBytesFromAsset('assets/passenger_marker.png', 75);
+    }
 
     @override
     Widget build(BuildContext context) {
@@ -71,6 +87,7 @@ class _DoRequestState extends State<DoRequest> {
                 final startMarker = Marker(
                     markerId: MarkerId('depart'),
                     position: LatLng(record.startLat, record.startLon),
+                    icon: BitmapDescriptor.fromBytes(mapsMarkerIcon),
                     infoWindow: InfoWindow(
                         title: 'Départ',
                         snippet: record.start,
@@ -80,6 +97,7 @@ class _DoRequestState extends State<DoRequest> {
                 final destinationMarker = Marker(
                     markerId: MarkerId('Arrivee'),
                     position: LatLng(record.destinationLat, record.destinationLon),
+                    icon: BitmapDescriptor.fromBytes(mapsMarkerIcon),
                     infoWindow: InfoWindow(
                         title: 'Arrivée',
                         snippet: record.destination,
@@ -89,7 +107,7 @@ class _DoRequestState extends State<DoRequest> {
                 final passengerMarker = Marker(
                     markerId: MarkerId('passenger'),
                     position: LatLng(record.passengerLat, record.passengerLon),
-                    icon: BitmapDescriptor.fromAsset('assets/directon_icon.png'),
+                    icon: BitmapDescriptor.fromBytes(passengerMarkerIcon),
                 );
                 _markers['passenger'] = passengerMarker;
             });
@@ -154,7 +172,7 @@ class _DoRequestState extends State<DoRequest> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                                 Text(passenger.firstName + ' ' + passenger.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                                Text('Téléphone : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                Text('Tel : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
                             ],
                         ),
                     ),
@@ -189,6 +207,14 @@ class _DoRequestState extends State<DoRequest> {
             });
         });
     }
+
+    Future<Uint8List> getBytesFromAsset(String path, int width) async {
+        ByteData data = await rootBundle.load(path);
+        ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+        ui.FrameInfo fi = await codec.getNextFrame();
+        return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+    }
+
 }
 
 class Record {
