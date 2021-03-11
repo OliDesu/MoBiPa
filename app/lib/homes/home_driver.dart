@@ -298,7 +298,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   ),
                                   borderRadius: BorderRadius.circular(30.0)),
                               child: Container(
-                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Nous contacter",
@@ -326,7 +326,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   ),
                                   borderRadius: BorderRadius.circular(30.0)),
                               child: Container(
-                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Utilisation des données",
