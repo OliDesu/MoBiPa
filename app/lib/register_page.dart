@@ -43,7 +43,9 @@ class _RegisterPageState extends State<RegisterPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                title: Text(widget.title),
+                backgroundColor: Colors.white38,
+                centerTitle: true,
+                title: Text('Espace d\'enregistrement'),
             ),
             body: Center(
               child: SingleChildScrollView(
@@ -100,12 +102,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                            Image.asset('assets/register.png'),
                             TextFormField(
                                 controller: _emailController,
                                 decoration: const InputDecoration(labelText: 'Email'),
                                 validator: (String value) {
                                     if (value.isEmpty) {
-                                        return 'Veuillez entrer du texte';
+                                        return 'Veuillez entrer une adresse mail valide';
                                     }
                                     return null;
                                 },
@@ -189,20 +192,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             _cropped != null ? Image.file(_cropped, height: 100, width: 100,)
                                 :Container(),
-                            _cropped == null ? ElevatedButton(onPressed: chooseFile, child: Text('Choisissez une photo de profil'))
+                            _cropped == null ? ElevatedButton(onPressed: chooseFile, child: Text('Choisissez une photo de profil'),)
                                 :Container(),
                             Container(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 alignment: Alignment.center,
                                 child: SignInButtonBuilder(
                                     icon: Icons.person_add,
-                                    backgroundColor: Colors.blueGrey,
+                                    backgroundColor: Colors.deepPurpleAccent,
                                     onPressed: () async {
                                         if (_formKey.currentState.validate()) {
                                             await _register();
                                         }
                                     },
-                                    text: 'Register',
+                                    text: 'S\'enregistrer',
+
                                 ),
                             ),
                             Container(

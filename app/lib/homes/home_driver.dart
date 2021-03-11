@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:app/widget/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,23 +38,26 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-            appBar: AppBar(
-                title: Text(widget.post["start"]),
-            ),
-            body: Container(
-                child: Card(
-                    child: ListTile(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
 
-                        title: Text(widget.post["firstName"] +" "+ widget.post["lastName"]),
-                        subtitle: Text(widget.post["date"] +"\n" "Adresse de départ : "+widget.post["start"]+"\n"+"Adresse d'arrivée : "+widget.post["destination"]+"\n" ),
-                    ),
-                ),
-            ),
-        );
-    }
+        title: Text(widget.post["start"]),
+      ),
+      body: Container(
+        child: Card(
+          child: ListTile(
+
+            title: Text(widget.post["firstName"] +" "+ widget.post["lastName"]),
+            subtitle: Text(widget.post["date"] +"\n" "Adresse de départ : "+widget.post["start"]+"\n"+"Adresse d'arrivée : "+widget.post["destination"]+"\n" )
+            ,
+
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 
@@ -117,6 +121,7 @@ class _DriverHomeState extends State<DriverHome> {
   @override
   bool descTextShowFlag = false;
   bool descTextShowFlag1 = false;
+  final ThemeData Theme = buildTheme();
 
   Location location = new Location();
 
@@ -132,34 +137,187 @@ class _DriverHomeState extends State<DriverHome> {
   String text = "Ajouter actualités ici ";
   @override
   Widget build(BuildContext context) {
-      return new Scaffold(
-          drawer: new Drawer(
-              child: new ListView(
+    return new Scaffold(
+        drawer: new Drawer(
+          child: new ListView(
+            children: <Widget>[
+              new Container(
+                  child: new DrawerHeader(
+                      child: new Container(
+                child: Text('Mobipa'),
+              ))),
+              new Container(
+                child: new Column(children: <Widget>[
+                    Material(
+                        child: ListTile(
+                            leading: new Icon(Icons.info),
+                            title: Text('Mon compte'),
+
+                            onTap: () {
+                            pushPage(context,Account());
+                            }),
+
+                            ),
+
+                  Material(
+                      child: ListTile(
+                          leading: new Icon(Icons.list),
+                          title: Text('Mes trajets'),
+                          onTap: () {
+                              pushPage(context, DoRequest());
+                          }),
+                  ),
+                    Material(
+                        child: ListTile(
+                            leading: new Icon(Icons.directions_car),
+                            title: Text('Trajets disponibles'),
+                            onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(
+                                        builder: (context) {
+                                            return StreamBuilder<QuerySnapshot>(
+                                                stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
+                                                builder: (context, snapshot) {
+                                                    if (!snapshot.hasData) return LinearProgressIndicator();
+                                                    return _buildList(context, snapshot.data.docs);
+                                                },
+                                            );
+                                        }
+                                    ),
+                                );
+                            }),
+                    ),
+                  Material(
+                      child: ListTile(
+                          leading: new Icon(Icons.settings),
+                          title: Text('Paramètres'),
+                          onTap: () {
+                              setState(() {
+                                  text = "Ajouter interface paramètres";
+                              });
+                              Navigator.pop(context);
+                          }),
+                  ),
+                ]),
+              )
+            ],
+          ),
+        ),
+        appBar: new AppBar(
+          backgroundColor: Colors.white38,
+          centerTitle: true,
+          title: new Text(
+              "Bienvenue "),
+        ),
+        body: new SingleChildScrollView(
+
+            child: Column(children: [
+
+              Container(
+                child: Text(
+                  'Actualités',
+                  style: TextStyle(height: 2, fontSize: 30),
+                ),
+              ),
+              Container(
+                  child: new Column(children: [
+                    Image(image: AssetImage('assets/car.png')),
+                  ])),
+              Container(
+                child: Column(
                   children: <Widget>[
-                      new Container(
-                          child: new DrawerHeader(
-                              child: new Container(
-                                  child: Text('Mobipa'),
-                              ))),
-                      new Container(
-                          child: new Column(children: <Widget>[
-                              Material(
-                                  child: ListTile(
-                                      leading: new Icon(Icons.info),
-                                      title: Text('Mon compte'),
-                                      onTap: () {
-                                          pushPage(context,Account());
-                                      }),
+                    new Container(
+                        child: new Column(children: [
+                          Text(
+                            'Besoin de plus d\'informations ?',
+                            style: TextStyle(height: 2, fontSize: 25),
+                          ),
+                        ])),
+                    Container(
+                      margin: EdgeInsets.all(16.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(description,
+                              maxLines: descTextShowFlag ? 8 : 1,
+                              textAlign: TextAlign.start),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                descTextShowFlag = !descTextShowFlag;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                descTextShowFlag
+                                    ? Text(
+                                  "Moins afficher",
+                                  style: TextStyle(color: Colors.black26),
+                                )
+                                    : Text("Tout afficher",
+                                    style: TextStyle(color: Colors.black26))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        child: Row(children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              pushPage(context, Contact());
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Nous contacter",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              pushPage(context, Data_Management());
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
 
-                              Material(
-                                  child: ListTile(
-                                      leading: new Icon(Icons.list),
-                                      title: Text('Mes trajets'),
-                                      onTap: () {
-                                          pushPage(context, DoRequest());
-                                      }),
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Utilisation des données",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                               Material(
                                   child: ListTile(
@@ -206,62 +364,76 @@ class _DriverHomeState extends State<DriverHome> {
                       )
                   ],
               ),
-          ),
-          appBar: new AppBar(
-              title: new Text(
-                  "Bienvenue "),
-          ),
-          body: new SingleChildScrollView(
-              child: Column(children: [
-                  Container(
-                      child: Text(
-                          'Actualités',
-                          style: TextStyle(height: 2, fontSize: 30),
+              Container(
+                  child: new Column(children: [
+                    Image(image: AssetImage('assets/queue.png')),
+                  ])),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    new Container(
+                        child: new Column(children: [
+                          Text(
+                            'Les Bénéficiaires',
+                            style: TextStyle(height: 2, fontSize: 25),
+                          ),
+                        ])),
+                    Container(
+                      margin: EdgeInsets.all(16.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(description1,
+                              maxLines: descTextShowFlag1 ? 8 : 1,
+                              textAlign: TextAlign.start),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                descTextShowFlag1 = !descTextShowFlag1;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                descTextShowFlag1
+                                    ? Text(
+                                  "Moins afficher",
+                                  style: TextStyle(color: Colors.black26),
+                                )
+                                    : Text("Tout afficher",
+                                    style: TextStyle(color: Colors.black26))
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                  ),
-                  Container(
-                      child: new Column(children: [
-                          Image(image: AssetImage('assets/voiture.png')),
-                      ])),
-                  Container(
-                      child: Column(
-                          children: <Widget>[
-                              new Container(
-                                  child: new Column(children: [
-                                      Text(
-                                          'Besoin de plus d\'informations ?',
-                                          style: TextStyle(height: 2, fontSize: 25),
-                                      ),
-                                  ])),
-                              Container(
-                                  margin: EdgeInsets.all(16.0),
-                                  child: new Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                          Text(description,
-                                              maxLines: descTextShowFlag ? 8 : 1,
-                                              textAlign: TextAlign.start),
-                                          InkWell(
-                                              onTap: () {
-                                                  setState(() {
-                                                      descTextShowFlag = !descTextShowFlag;
-                                                  });
-                                              },
-                                              child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: <Widget>[
-                                                      descTextShowFlag
-                                                          ? Text(
-                                                          "Moins afficher",
-                                                          style: TextStyle(color: Colors.white38),
-                                                      )
-                                                          : Text("Tout afficher",
-                                                          style: TextStyle(color: Colors.white38))
-                                                  ],
-                                              ),
-                                          ),
-                                      ],
+                    ),
+                    Container(
+                        child: Row(children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
                                   ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Devenir un passager",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                               Container(
                                   child: Row(children: <Widget>[
@@ -376,8 +548,11 @@ class _DriverHomeState extends State<DriverHome> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
+
       return Scaffold(
         appBar: new AppBar(
+          backgroundColor: Colors.white38,
+          centerTitle: true,
           title : Text("Trajets disponibles"),
         ),
         body:
@@ -398,12 +573,13 @@ class _DriverHomeState extends State<DriverHome> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.black26),
+                  borderRadius: BorderRadius.circular(2.0),
               ),
               child: Material(
                   child: ListTile(
                       title: Text(record.firstName + ' ' + record.lastName),
+                      tileColor: Colors.grey,
                       subtitle: Text(record.start + ' - ' + record.destination),
                       onTap: () {
                           showDialog(

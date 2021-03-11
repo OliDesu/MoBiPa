@@ -54,6 +54,8 @@ class _DoRequestState extends State<DoRequest> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
+                centerTitle: true,
+                backgroundColor: Colors.white38,
                 title: Text('Mon trajet'),
             ),
             body: Container(
@@ -67,7 +69,10 @@ class _DoRequestState extends State<DoRequest> {
                         if (!snapshot.hasData) return LinearProgressIndicator();
                         else {
                             if (snapshot.data.size == 0){
-                                return Text('RAS');
+                                return _buildReturn(context);
+
+
+
                             }
                             return _buildColumn(context, snapshot.data.docs.elementAt(0));
                         }
@@ -76,7 +81,15 @@ class _DoRequestState extends State<DoRequest> {
             ),
         );
     }
+Widget _buildReturn(BuildContext context){
+        return Column(
+            children: [
 
+                Image.asset('assets/notfound.png'),
+                Text('Aucun trajet n\'est disponible',style: TextStyle(fontSize: 25),),
+            ],
+        );
+}
     Widget _buildColumn(BuildContext context, DocumentSnapshot data) {
         Record record = Record.fromSnapshot(data);
 
@@ -137,7 +150,7 @@ class _DoRequestState extends State<DoRequest> {
             children: <Widget> [
                 Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
+                        border: Border.all(color: Colors.deepPurple),
                         borderRadius: BorderRadius.circular(8.0),
                     ),
                     height: MediaQuery.of(context).size.height/2,
@@ -153,9 +166,9 @@ class _DoRequestState extends State<DoRequest> {
                 ),
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Votre passager : ',textScaleFactor: 1.2, textAlign: TextAlign.start),
+
                 ),
-                Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
+
                 Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Container(
@@ -168,24 +181,45 @@ class _DoRequestState extends State<DoRequest> {
                             ),
                         ),
                         width: MediaQuery.of(context).size.width,
-                        child:  Row(
+                        child:  Column(
+
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                                Text(passenger.firstName + ' ' + passenger.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                                Text('Tel : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                Text('Votre passager : ',textScaleFactor: 1.2, textAlign: TextAlign.center,style: TextStyle(fontSize: 25),),
+                                Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
+                                Text('\n'+passenger.firstName + ' ' + passenger.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start,),
+                                Text('\nTel : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                RaisedButton(
+                                    onPressed: () => launch("tel://"+passenger.tel),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(80.0)),
+                                    padding: EdgeInsets.all(0.0),
+                                    child: Ink(
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                colors: [Color(0x6e46e3), Color(0x6e46e3)],
+
+
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(30.0)),
+                                        child: Container(
+                                            constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                                "Appeller",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(color: Colors.white, fontSize: 15),
+                                            ),
+                                        ),
+                                    ),
+                                ),
                             ],
                         ),
                     ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                        ElevatedButton(
-                            onPressed: () => launch("tel://"+passenger.tel),
-                            child: Text("Appeler"),
-                        ),
-                    ],
-                ),
+
             ],
         );
     }
