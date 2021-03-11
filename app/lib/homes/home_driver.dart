@@ -390,29 +390,32 @@ class _DriverHomeState extends State<DriverHome> {
                       ),
                       Container(
                           child: Row(children: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(60.0)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+                            SafeArea(
+                              child: RaisedButton(
+                                onPressed: () {
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(60.0)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
 
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  child: Container(
+                                    constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Devenir un passager",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white, fontSize: 15),
                                     ),
-                                    borderRadius: BorderRadius.circular(30.0)),
-                                child: Container(
-                                  constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Devenir un passager",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                 ),
                               ),
