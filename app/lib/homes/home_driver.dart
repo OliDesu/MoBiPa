@@ -14,7 +14,8 @@ import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/data_management.dart';
 import 'package:app/homes/interfaces/doRequest.dart';
-import 'package:app/main.dart';
+
+import '../main.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -34,6 +35,10 @@ class DetailPage extends StatefulWidget {
 
   @override
   _DetailPageState createState() => _DetailPageState();
+
+
+
+
 
 }
 
@@ -78,33 +83,33 @@ class _ListPageStates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return new Scaffold(
-          appBar: AppBar(
-              title: Text("Trajets disponibles"),
-          ),
-          body: Container(
-              child: FutureBuilder(
-                  future: fetchOrders(),
-                  // ignore: non_constant_identifier_names
-                  builder: (_, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: Text("Loading ..."));
-                      } else {
-                          return ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (_, index) {
-                                  return ListTile(
-                                      title: Text(snapshot.data[index]["start"]),
-                                      onTap: (){
-                                          Navigator.push(context,MaterialPageRoute(builder:(context) =>DetailPage(post:snapshot.data[index],)));
-                                      }
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text("Trajets disponibles"),
+      ),
+      body: Container(
+        child: FutureBuilder(
+            future: fetchOrders(),
+            // ignore: non_constant_identifier_names
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: Text("Loading ..."));
+              } else {
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (_, index) {
+                      return ListTile(
+                          title: Text(snapshot.data[index]["start"]),
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder:(context) =>DetailPage(post:snapshot.data[index],)));
+                          }
 
-                                  );
-                              });
-                      }
-                  }),
-          ),
-      );
+                      );
+                    });
+              }
+            }),
+      ),
+    );
   }
 
 
@@ -144,59 +149,69 @@ class _DriverHomeState extends State<DriverHome> {
               new Container(
                   child: new DrawerHeader(
                       child: new Container(
-                child: Text('Mobipa'),
-              ))),
+                        child: Text('Mobipa'),
+                      ))),
               new Container(
                 child: new Column(children: <Widget>[
-                    Material(
-                        child: ListTile(
-                            leading: new Icon(Icons.info),
-                            title: Text('Mon compte'),
-
-                            onTap: () {
-                            pushPage(context,Account());
-                            }),
-
-                            ),
-
                   Material(
-                      child: ListTile(
-                          leading: new Icon(Icons.list),
-                          title: Text('Mes trajets'),
-                          onTap: () {
-                              pushPage(context, DoRequest());
-                          }),
+                    child: ListTile(
+                        leading: new Icon(Icons.info),
+                        title: Text('Mon compte'),
+
+                        onTap: () {
+                          pushPage(context,Account());
+                        }),
+
                   ),
-                    Material(
-                        child: ListTile(
-                            leading: new Icon(Icons.directions_car),
-                            title: Text('Trajets disponibles'),
-                            onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(
-                                        builder: (context) {
-                                            return StreamBuilder<QuerySnapshot>(
-                                                stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
-                                                builder: (context, snapshot) {
-                                                    if (!snapshot.hasData) return LinearProgressIndicator();
-                                                    return _buildList(context, snapshot.data.docs);
-                                                },
-                                            );
-                                        }
-                                    ),
-                                );
-                            }),
-                    ),
+
                   Material(
-                      child: ListTile(
-                          leading: new Icon(Icons.settings),
-                          title: Text('Paramètres'),
-                          onTap: () {
-                              setState(() {
-                                  text = "Ajouter interface paramètres";
-                              });
-                              Navigator.pop(context);
-                          }),
+                    child: ListTile(
+                        leading: new Icon(Icons.list),
+                        title: Text('Mes trajets'),
+                        onTap: () {
+                          pushPage(context, DoRequest());
+                        }),
+                  ),
+                  Material(
+                    child: ListTile(
+                        leading: new Icon(Icons.directions_car),
+                        title: Text('Trajets disponibles'),
+                        onTap: () {
+                          Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (context) {
+                                  return StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) return LinearProgressIndicator();
+                                      return _buildList(context, snapshot.data.docs);
+                                    },
+                                  );
+                                }
+                            ),
+                          );
+                        }),
+                  ),
+                  Material(
+                    child: ListTile(
+                        leading: new Icon(Icons.settings),
+                        title: Text('Paramètres'),
+                        onTap: () {
+                          setState(() {
+                            text = "Ajouter interface paramètres";
+                          });
+                          Navigator.pop(context);
+                        }),
+                  ),
+                  Material(
+                    child: ListTile(
+                      leading: new Icon(Icons.exit_to_app),
+                      title: Text('Déconnexion'),
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        pushPage(context, AuthTypeSelector());
+                      },
+                    ),
                   ),
                 ]),
               )
@@ -318,52 +333,24 @@ class _DriverHomeState extends State<DriverHome> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
-                              ),),),
-                              Material(
-                                  child: ListTile(
-                                      leading: new Icon(Icons.directions_car),
-                                      title: Text('Trajets disponibles'),
-                                      onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                      return StreamBuilder<QuerySnapshot>(
-                                                          stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
-                                                          builder: (context, snapshot) {
-                                                              if (!snapshot.hasData) return LinearProgressIndicator();
-                                                              return _buildList(context, snapshot.data.docs);
-                                                          },
-                                                      );
-                                                  }
-                                              ),
-                                          );
-                                      }),
                               ),
-                              Material(
-                                  child: ListTile(
-                                      leading: new Icon(Icons.settings),
-                                      title: Text('Paramètres'),
-                                      onTap: () {
-                                          setState(() {
-                                              text = "Ajouter interface paramètres";
-                                          });
-                                          Navigator.pop(context);
-                                      }),
-                              ),
-                          
-                          ]),
-                      ),
-                  Container(
+                            ),
+                          ),
+                        ])),
+                    Container(
+                      child: Text('\n'),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                   child: new Column(children: [
-                  Image(image: AssetImage('assets/queue.png')),
+                    Image(image: AssetImage('assets/queue.png')),
                   ])),
-
-
-
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                       new Container(
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    new Container(
                         child: new Column(children: [
                           Text(
                             'Les Bénéficiaires',
@@ -419,7 +406,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   ),
                                   borderRadius: BorderRadius.circular(30.0)),
                               child: Container(
-                                constraints: BoxConstraints(maxWidth: 350.0, minHeight: 50.0),
+                                constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Devenir un passager",
@@ -427,248 +414,134 @@ class _DriverHomeState extends State<DriverHome> {
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
-    ),),
-                              Container(
-                                  child: Row(children: <Widget>[
-                                      FlatButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              side: BorderSide(color: Colors.white)),
-                                          color: Colors.grey,
-                                          textColor: Colors.white,
-                                          padding: EdgeInsets.all(8.0),
-                                          onPressed: () {
-                                              pushPage(context, Contact());
-                                          },
-                                          child: Text(
-                                              "     Contactez nous    ".toUpperCase(),
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                              ),
-                                          ),
-                                      ),
-                                      FlatButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              side: BorderSide(color: Colors.white)),
-                                          color: Colors.grey,
-                                          textColor: Colors.white,
-                                          padding: EdgeInsets.all(8.0),
-                                          onPressed: () {
-                                              pushPage(context, Data_Management());
-
-                                          },
-                                          child: Text(
-                                              "Utilisation des données".toUpperCase(),
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                              ),
-                                          ),
-                                      ),
-                                  ])),
-                              Container(
-                                  child: Text('\n'),
-                              ),
-                          ],
-                      ),
-                  ),
-                  Container(
-                      child: new Column(children: [
-                          Image(image: AssetImage('assets/beneficiaire.jpg')),
-                      ])),
-                  Container(
-                      child: Column(
-                          children: <Widget>[
-                              new Container(
-                                  child: new Column(children: [
-                                      Text(
-                                          'Les Bénéficiaires',
-                                          style: TextStyle(height: 2, fontSize: 25),
-                                      ),
-                                  ])),
-                              Container(
-                                  margin: EdgeInsets.all(16.0),
-                                  child: new Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                          Text(description1,
-                                              maxLines: descTextShowFlag1 ? 8 : 1,
-                                              textAlign: TextAlign.start),
-                                          InkWell(
-                                              onTap: () {
-                                                  setState(() {
-                                                      descTextShowFlag1 = !descTextShowFlag1;
-                                                  });
-                                              },
-                                              child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: <Widget>[
-                                                      descTextShowFlag1
-                                                          ? Text(
-                                                          "Moins afficher",
-                                                          style: TextStyle(color: Colors.white38),
-                                                      )
-                                                          : Text("Tout afficher",
-                                                          style: TextStyle(color: Colors.white38))
-                                                  ],
-                                              ),
-                                          ),
-                                      ],
-                                  ),
-                              ),
-                              Container(
-                                  child: Row(children: <Widget>[
-                                      FlatButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              side: BorderSide(color: Colors.white)),
-                                          color: Colors.grey,
-                                          textColor: Colors.white,
-                                          padding: EdgeInsets.all(8.0),
-                                          onPressed: () {},
-                                          child: Text(
-                                              "     Devenir un passager   ".toUpperCase(),
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                              ),
-                                          ),
-                                      ),
-                                  ])),
-                          ],
-                      ),
-                  ),
-              ]
-    ),
-    ),
-    ],
-    ),
-    ),
-    ],
-    )),);
-
-
-
+                            ),
+                          ),
+                        ])),
+                  ],
+                ),
+              ),
+            ])));
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
 
-      return Scaffold(
-        appBar: new AppBar(
-          backgroundColor: Colors.white38,
-          centerTitle: true,
-          title : Text("Trajets disponibles"),
-        ),
-        body:
+    return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: Colors.white38,
+        centerTitle: true,
+        title : Text("Trajets disponibles"),
+      ),
+      body:
 
-        ListView(
-            padding: const EdgeInsets.only(top: 20.0),
-            children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      ListView(
+        padding: const EdgeInsets.only(top: 20.0),
+        children: snapshot.map((data) => _buildListItem(context, data)).toList(),
 
-        ),
-      );
+      ),
+    );
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-      final record = Record.fromSnapshot(data);
+    final record = Record.fromSnapshot(data);
 
-      return Padding(
-          key: ValueKey(record.firstName),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26),
-                  borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: Material(
-                  child: ListTile(
-                      title: Text(record.firstName + ' ' + record.lastName),
-                      tileColor: Colors.grey,
-                      subtitle: Text(record.start + ' - ' + record.destination),
-                      onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                  title: Text("Validez-vous ce trajet ?"),
-                                  content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                          Text("Passager : ${record
-                                              .firstName} ${record.lastName}"),
-                                          Text("Départ : ${record.start}"),
-                                          Text("Arrivée : ${record.destination}"),
-                                      ],
-                                  ),
-                                  actions: <Widget>[
-                                      ElevatedButton(
-                                          onPressed: () async {
-                                              await record.reference.update(
-                                                  {'status': 'processing'});
-                                              await record.reference.update(
-                                                  {'driverId': FirebaseAuth.instance.currentUser.uid });
-
-                                              _serviceEnabled = await location.serviceEnabled();
-                                              if (!_serviceEnabled) {
-                                                  _serviceEnabled = await location.requestService();
-                                                  if(!_serviceEnabled) {
-                                                      return;
-                                                  }
-                                              }
-
-                                              _permissionGranted = await location.hasPermission();
-                                              if (_permissionGranted == PermissionStatus.DENIED) {
-                                                  _permissionGranted = await location.requestPermission();
-                                                  if (_permissionGranted != PermissionStatus.GRANTED) {
-                                                      return;
-                                                  }
-                                              }
-
-                                              _locationData = await location.getLocation();
-                                              await record.reference.update(
-                                                  {'driverLat': _locationData.latitude});
-                                              await record.reference.update(
-                                                  {'driverLon': _locationData.longitude});
-                                              Navigator.of(context).pop();
-                                          },
-                                          child: Text("Valider"),
-                                      ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                              Navigator.of(context).pop();
-                                          },
-                                          child: Text("Annuler"),
-                                      ),
-                                  ],
-                              ),
-                          );
-                      },
+    return Padding(
+      key: ValueKey(record.firstName),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black26),
+          borderRadius: BorderRadius.circular(2.0),
+        ),
+        child: Material(
+          child: ListTile(
+            title: Text(record.firstName + ' ' + record.lastName),
+            tileColor: Colors.grey,
+            subtitle: Text(record.start + ' - ' + record.destination),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text("Validez-vous ce trajet ?"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Passager : ${record
+                          .firstName} ${record.lastName}"),
+                      Text("Départ : ${record.start}"),
+                      Text("Arrivée : ${record.destination}"),
+                    ],
                   ),
-              ),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      onPressed: () async {
+                        await record.reference.update(
+                            {'status': 'processing'});
+                        await record.reference.update(
+                            {'driverId': FirebaseAuth.instance.currentUser.uid });
+
+                        _serviceEnabled = await location.serviceEnabled();
+                        if (!_serviceEnabled) {
+                          _serviceEnabled = await location.requestService();
+                          if(!_serviceEnabled) {
+                            return;
+                          }
+                        }
+
+                        _permissionGranted = await location.hasPermission();
+                        if (_permissionGranted == PermissionStatus.DENIED) {
+                          _permissionGranted = await location.requestPermission();
+                          if (_permissionGranted != PermissionStatus.GRANTED) {
+                            return;
+                          }
+                        }
+
+                        _locationData = await location.getLocation();
+                        await record.reference.update(
+                            {'driverLat': _locationData.latitude});
+                        await record.reference.update(
+                            {'driverLon': _locationData.longitude});
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Valider"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Annuler"),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-      );
+        ),
+      ),
+    );
   }
 }
 
 class Record {
-    final String firstName;
-    final String lastName;
-    final String start;
-    final String destination;
-    final DocumentReference reference;
+  final String firstName;
+  final String lastName;
+  final String start;
+  final String destination;
+  final DocumentReference reference;
 
-    Record.fromMap(Map<String, dynamic> map, {this.reference})
-        : assert(map['firstName'] != null),
-            assert(map['lastName'] != null),
-            assert(map['start'] != null),
-            assert(map['destination'] != null),
-            firstName = map['firstName'],
-            lastName = map['lastName'],
-            start = map['start'],
-            destination = map['destination'];
+  Record.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['firstName'] != null),
+        assert(map['lastName'] != null),
+        assert(map['start'] != null),
+        assert(map['destination'] != null),
+        firstName = map['firstName'],
+        lastName = map['lastName'],
+        start = map['start'],
+        destination = map['destination'];
 
-    Record.fromSnapshot(DocumentSnapshot snapshot)
-        : this.fromMap(snapshot.data(), reference: snapshot.reference);
+  Record.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
 
-    @override
-    String toString() => "Trajet<$firstName $lastName\n$start - $destination>";
+  @override
+  String toString() => "Trajet<$firstName $lastName\n$start - $destination>";
 }
