@@ -32,7 +32,7 @@ class _Contact extends State<Contact> {
     return new Scaffold(
 
         appBar: new AppBar(
-    title: new Text("Interface compte "),
+    title: new Text("Nous contacter"),
     ),
     body: new MaterialApp(
 
@@ -45,10 +45,13 @@ class _Contact extends State<Contact> {
               textColor: Colors.teal.shade900,
               logo: AssetImage('assets/mobipa.png'),
               email: 'mobipa@gmail.com',
+              emailText: 'Email',
               companyName: 'MobiPA',
               companyColor: Colors.white,
+              phoneNumberText: 'Téléphone',
               phoneNumber: '+XXXXXXXXX',
               website: 'https://mobipa.univ-grenoble-alpes.fr/',
+              websiteText: 'Site web',
               githubUserName: 'https://github.com/OliDesu/MoBiPa',
 
               tagLine: 'La Mure',

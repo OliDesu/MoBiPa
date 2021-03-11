@@ -291,7 +291,8 @@ class _PassengerHomeState extends State<PassengerHome> {
                   ],
               ),
           ),
-        ),
+
+
         appBar: new AppBar(
           backgroundColor: Colors.white38,
           centerTitle: true,
@@ -457,7 +458,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                           ],
                       ),
                   ),
-                ),
+
                 Container(
                     child: Row(children: <Widget>[
 
@@ -478,7 +479,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                               ),
                               borderRadius: BorderRadius.circular(30.0)),
                           child: Container(
-                            constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                            constraints: BoxConstraints(maxWidth: 350.0, minHeight: 50.0),
                             alignment: Alignment.center,
                             child: Text(
                               "Devenir conducteur",
@@ -492,7 +493,7 @@ class _PassengerHomeState extends State<PassengerHome> {
               ],
             ),
           ),
-        ])));
+        ]))])));
   }
 
 }

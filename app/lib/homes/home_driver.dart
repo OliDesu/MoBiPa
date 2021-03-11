@@ -318,7 +318,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
-                              ),
+                              ),),),
                               Material(
                                   child: ListTile(
                                       leading: new Icon(Icons.directions_car),
@@ -350,28 +350,20 @@ class _DriverHomeState extends State<DriverHome> {
                                           Navigator.pop(context);
                                       }),
                               ),
-                              Material(
-                                  child: ListTile(
-                                      leading: new Icon(Icons.exit_to_app),
-                                      title: Text('Déconnexion'),
-                                      onTap: () async {
-                                          await FirebaseAuth.instance.signOut();
-                                          pushPage(context, AuthTypeSelector());
-                                      },
-                                  ),
-                              ),
+                          
                           ]),
-                      )
-                  ],
-              ),
-              Container(
+                      ),
+                  Container(
                   child: new Column(children: [
-                    Image(image: AssetImage('assets/queue.png')),
+                  Image(image: AssetImage('assets/queue.png')),
                   ])),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    new Container(
+
+
+
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                       new Container(
                         child: new Column(children: [
                           Text(
                             'Les Bénéficiaires',
@@ -427,7 +419,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   ),
                                   borderRadius: BorderRadius.circular(30.0)),
                               child: Container(
-                                constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                                constraints: BoxConstraints(maxWidth: 350.0, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Devenir un passager",
@@ -435,6 +427,7 @@ class _DriverHomeState extends State<DriverHome> {
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
+    ),),
                               Container(
                                   child: Row(children: <Widget>[
                                       FlatButton(
@@ -544,7 +537,17 @@ class _DriverHomeState extends State<DriverHome> {
                           ],
                       ),
                   ),
-              ])));
+              ]
+    ),
+    ),
+    ],
+    ),
+    ),
+    ],
+    )),);
+
+
+
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
