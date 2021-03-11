@@ -14,6 +14,7 @@ import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/data_management.dart';
 import 'package:app/homes/interfaces/doRequest.dart';
+import 'package:app/main.dart';
 
 class DriverHome extends StatefulWidget {
   @override
@@ -33,10 +34,6 @@ class DetailPage extends StatefulWidget {
 
   @override
   _DetailPageState createState() => _DetailPageState();
-
-
-
-
 
 }
 
@@ -81,33 +78,33 @@ class _ListPageStates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text("Trajets disponibles"),
-      ),
-      body: Container(
-        child: FutureBuilder(
-            future: fetchOrders(),
-            // ignore: non_constant_identifier_names
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Text("Loading ..."));
-              } else {
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, index) {
-                      return ListTile(
-                        title: Text(snapshot.data[index]["start"]),
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder:(context) =>DetailPage(post:snapshot.data[index],)));
-                        }
+      return new Scaffold(
+          appBar: AppBar(
+              title: Text("Trajets disponibles"),
+          ),
+          body: Container(
+              child: FutureBuilder(
+                  future: fetchOrders(),
+                  // ignore: non_constant_identifier_names
+                  builder: (_, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: Text("Loading ..."));
+                      } else {
+                          return ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (_, index) {
+                                  return ListTile(
+                                      title: Text(snapshot.data[index]["start"]),
+                                      onTap: (){
+                                          Navigator.push(context,MaterialPageRoute(builder:(context) =>DetailPage(post:snapshot.data[index],)));
+                                      }
 
-                      );
-                    });
-              }
-            }),
-      ),
-    );
+                                  );
+                              });
+                      }
+                  }),
+          ),
+      );
   }
 
 
@@ -322,14 +319,50 @@ class _DriverHomeState extends State<DriverHome> {
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
-                            ),
-                          ),
-                        ])),
-                    Container(
-                      child: Text('\n'),
-                    ),
+                              Material(
+                                  child: ListTile(
+                                      leading: new Icon(Icons.directions_car),
+                                      title: Text('Trajets disponibles'),
+                                      onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                                      return StreamBuilder<QuerySnapshot>(
+                                                          stream: FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'open').snapshots(),
+                                                          builder: (context, snapshot) {
+                                                              if (!snapshot.hasData) return LinearProgressIndicator();
+                                                              return _buildList(context, snapshot.data.docs);
+                                                          },
+                                                      );
+                                                  }
+                                              ),
+                                          );
+                                      }),
+                              ),
+                              Material(
+                                  child: ListTile(
+                                      leading: new Icon(Icons.settings),
+                                      title: Text('Paramètres'),
+                                      onTap: () {
+                                          setState(() {
+                                              text = "Ajouter interface paramètres";
+                                          });
+                                          Navigator.pop(context);
+                                      }),
+                              ),
+                              Material(
+                                  child: ListTile(
+                                      leading: new Icon(Icons.exit_to_app),
+                                      title: Text('Déconnexion'),
+                                      onTap: () async {
+                                          await FirebaseAuth.instance.signOut();
+                                          pushPage(context, AuthTypeSelector());
+                                      },
+                                  ),
+                              ),
+                          ]),
+                      )
                   ],
-                ),
               ),
               Container(
                   child: new Column(children: [
@@ -402,13 +435,116 @@ class _DriverHomeState extends State<DriverHome> {
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
-                            ),
-                          ),
-                        ])),
-                  ],
-                ),
-              ),
-            ])));
+                              Container(
+                                  child: Row(children: <Widget>[
+                                      FlatButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(18.0),
+                                              side: BorderSide(color: Colors.white)),
+                                          color: Colors.grey,
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(8.0),
+                                          onPressed: () {
+                                              pushPage(context, Contact());
+                                          },
+                                          child: Text(
+                                              "     Contactez nous    ".toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                              ),
+                                          ),
+                                      ),
+                                      FlatButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(18.0),
+                                              side: BorderSide(color: Colors.white)),
+                                          color: Colors.grey,
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(8.0),
+                                          onPressed: () {
+                                              pushPage(context, Data_Management());
+
+                                          },
+                                          child: Text(
+                                              "Utilisation des données".toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                              ),
+                                          ),
+                                      ),
+                                  ])),
+                              Container(
+                                  child: Text('\n'),
+                              ),
+                          ],
+                      ),
+                  ),
+                  Container(
+                      child: new Column(children: [
+                          Image(image: AssetImage('assets/beneficiaire.jpg')),
+                      ])),
+                  Container(
+                      child: Column(
+                          children: <Widget>[
+                              new Container(
+                                  child: new Column(children: [
+                                      Text(
+                                          'Les Bénéficiaires',
+                                          style: TextStyle(height: 2, fontSize: 25),
+                                      ),
+                                  ])),
+                              Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  child: new Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                          Text(description1,
+                                              maxLines: descTextShowFlag1 ? 8 : 1,
+                                              textAlign: TextAlign.start),
+                                          InkWell(
+                                              onTap: () {
+                                                  setState(() {
+                                                      descTextShowFlag1 = !descTextShowFlag1;
+                                                  });
+                                              },
+                                              child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                      descTextShowFlag1
+                                                          ? Text(
+                                                          "Moins afficher",
+                                                          style: TextStyle(color: Colors.white38),
+                                                      )
+                                                          : Text("Tout afficher",
+                                                          style: TextStyle(color: Colors.white38))
+                                                  ],
+                                              ),
+                                          ),
+                                      ],
+                                  ),
+                              ),
+                              Container(
+                                  child: Row(children: <Widget>[
+                                      FlatButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(18.0),
+                                              side: BorderSide(color: Colors.white)),
+                                          color: Colors.grey,
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(8.0),
+                                          onPressed: () {},
+                                          child: Text(
+                                              "     Devenir un passager   ".toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                              ),
+                                          ),
+                                      ),
+                                  ])),
+                          ],
+                      ),
+                  ),
+              ])));
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){

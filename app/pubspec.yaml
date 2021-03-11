@@ -77,6 +77,8 @@ flutter:
     - assets/queue.png
     - assets/notfound.png
     - assets/register.png
+    - assets/maps_marker.png
+    - assets/passenger_marker.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

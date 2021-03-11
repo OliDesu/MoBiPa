@@ -19,10 +19,11 @@ import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/myRequest.dart';
+import 'package:app/main.dart';
 
 class PassengerHome extends StatefulWidget {
-  @override
-  _PassengerHomeState createState() => new _PassengerHomeState();
+    @override
+    _PassengerHomeState createState() => new _PassengerHomeState();
 }
 
 class _PassengerHomeState extends State<PassengerHome> {
@@ -31,24 +32,24 @@ class _PassengerHomeState extends State<PassengerHome> {
   PickResult selectedPlaceStart;
   PickResult selectedPlaceEnd;
 
-  Location location = new Location();
+    Location location = new Location();
 
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
-  LocationData _locationData;
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
 
 
   Future<Uint8List> getMarker() async {
     ByteData byteData =
         await DefaultAssetBundle.of(context).load("assets/directon_icon.png");
-    return byteData.buffer.asUint8List();
-  }
+        return byteData.buffer.asUint8List();
+    }
 
-  void pushPage(BuildContext context, Widget page) {
-    Navigator.of(context) /*!*/ .push(
-      MaterialPageRoute<void>(builder: (_) => page),
-    );
-  }
+    void pushPage(BuildContext context, Widget page) {
+        Navigator.of(context) /*!*/ .push(
+            MaterialPageRoute<void>(builder: (_) => page),
+        );
+    }
 
   Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
@@ -84,90 +85,90 @@ class _PassengerHomeState extends State<PassengerHome> {
               Provider.of<repo.UserRepo>(this.context, listen: false)
                   .updateRequestsUtilisateur();
 
-              _serviceEnabled = await location.serviceEnabled();
-              if (!_serviceEnabled) {
-                  _serviceEnabled = await location.requestService();
-                  if(!_serviceEnabled) {
-                      return;
-                  }
-              }
+                          _serviceEnabled = await location.serviceEnabled();
+                          if (!_serviceEnabled) {
+                              _serviceEnabled = await location.requestService();
+                              if(!_serviceEnabled) {
+                                  return;
+                              }
+                          }
 
-              _permissionGranted = await location.hasPermission();
-              if (_permissionGranted == PermissionStatus.DENIED) {
-                  _permissionGranted = await location.requestPermission();
-                  if (_permissionGranted != PermissionStatus.GRANTED) {
-                      return;
-                  }
-              }
+                          _permissionGranted = await location.hasPermission();
+                          if (_permissionGranted == PermissionStatus.DENIED) {
+                              _permissionGranted = await location.requestPermission();
+                              if (_permissionGranted != PermissionStatus.GRANTED) {
+                                  return;
+                              }
+                          }
 
-              _locationData = await location.getLocation();
+                          _locationData = await location.getLocation();
 
-              await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
-                  {'passengerLat': _locationData.latitude});
+                          await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
+                              {'passengerLat': _locationData.latitude});
 
-              await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
-                  {'passengerLon': _locationData.longitude});
+                          await FirebaseFirestore.instance.collection('requests').doc(ref.id).update(
+                              {'passengerLon': _locationData.longitude});
 
-            }
-            Navigator.of(context).pop();
-          },
-          child: const Text('Valider'),
-        ),
-        new ElevatedButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Annuler'),
-        ),
-      ],
-    );
+                      }
+                      Navigator.of(context).pop();
+                  },
+                  child: const Text('Valider'),
+              ),
+              new ElevatedButton(
+                  onPressed: () async {
+                      Navigator.of(context).pop();
+                  },
+                  child: const Text('Annuler'),
+              ),
+          ],
+      );
   }
 
   Widget _buildPopUpData(BuildContext context) {
-    return new AlertDialog(
-      title: const Text('Voulez vous valider ce trajet ? '),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Départ : " + selectedPlaceStart.formattedAddress ?? ""),
-          Text("Arrivée : " + selectedPlaceEnd.formattedAddress ?? ""),
-        ],
-      ),
-      actions: <Widget>[
-        new ElevatedButton(
-          onPressed: () async {
-            if (selectedPlaceStart != null && selectedPlaceEnd != null) {
-              FirebaseRequest order = new FirebaseRequest(
-                  selectedPlaceStart.formattedAddress,
-                  selectedPlaceEnd.formattedAddress,
-                  selectedPlaceStart.geometry.location.lat,
-                  selectedPlaceStart.geometry.location.lng,
-                  selectedPlaceEnd.geometry.location.lat,
-                  selectedPlaceEnd.geometry.location.lng);
-              await order.getName(FirebaseAuth.instance.currentUser.uid);
-              DocumentReference ref = await FirebaseFirestore.instance
-                  .collection('requests')
-                  .add(order.toJson());
-              Provider.of<repo.UserRepo>(this.context, listen: false)
-                  .connectedUtilisateur
-                  .requests
-                  .add(ref.id);
-              Provider.of<repo.UserRepo>(this.context, listen: false)
-                  .updateRequestsUtilisateur();
-            }
-            Navigator.of(context).pop();
-          },
-          child: const Text('Valider'),
-        ),
-        new ElevatedButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Annuler'),
-        ),
-      ],
-    );
+      return new AlertDialog(
+          title: const Text('Voulez vous valider ce trajet ? '),
+          content: new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                  Text("Départ : " + selectedPlaceStart.formattedAddress ?? ""),
+                  Text("Arrivée : " + selectedPlaceEnd.formattedAddress ?? ""),
+              ],
+          ),
+          actions: <Widget>[
+              new ElevatedButton(
+                  onPressed: () async {
+                      if (selectedPlaceStart != null && selectedPlaceEnd != null) {
+                          FirebaseRequest order = new FirebaseRequest(
+                              selectedPlaceStart.formattedAddress,
+                              selectedPlaceEnd.formattedAddress,
+                              selectedPlaceStart.geometry.location.lat,
+                              selectedPlaceStart.geometry.location.lng,
+                              selectedPlaceEnd.geometry.location.lat,
+                              selectedPlaceEnd.geometry.location.lng);
+                          await order.getName(FirebaseAuth.instance.currentUser.uid);
+                          DocumentReference ref = await FirebaseFirestore.instance
+                              .collection('requests')
+                              .add(order.toJson());
+                          Provider.of<repo.UserRepo>(this.context, listen: false)
+                              .connectedUtilisateur
+                              .requests
+                              .add(ref.id);
+                          Provider.of<repo.UserRepo>(this.context, listen: false)
+                              .updateRequestsUtilisateur();
+                      }
+                      Navigator.of(context).pop();
+                  },
+                  child: const Text('Valider'),
+              ),
+              new ElevatedButton(
+                  onPressed: () async {
+                      Navigator.of(context).pop();
+                  },
+                  child: const Text('Annuler'),
+              ),
+          ],
+      );
   }
 
   final String description =
@@ -249,37 +250,46 @@ class _PassengerHomeState extends State<PassengerHome> {
                                         onPlacePicked: (result) {
                                           selectedPlaceEnd = result;
 
-                                          Navigator.of(context).pop();
-                                          setState(() {});
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                _buildPopupDialog(context),
-                                          );
-                                        },
+                                                                              Navigator.of(context).pop();
+                                                                              setState(() {});
+                                                                              showDialog(
+                                                                                  context: context,
+                                                                                  builder: (BuildContext context) =>
+                                                                                      _buildPopupDialog(context),
+                                                                              );
+                                                                          },
+                                                                      );
+                                                                  },
+                                                              ),
+                                                          );
+                                                      },
+                                                  );
+                                              },
+                                          ),
                                       );
-                                    },
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  new ListTile(
-                      leading: new Icon(Icons.settings),
-                      title: Text('Paramètres'),
-                      onTap: () {
-                        setState(() {
-                          text = "Ajouter interface paramètres";
-                        });
-                        Navigator.pop(context);
-                      }),
-                ]),
-              )
-            ],
+                                  },
+                              ),
+                              new ListTile(
+                                  leading: new Icon(Icons.settings),
+                                  title: Text('Paramètres'),
+                                  onTap: () {
+                                      setState(() {
+                                          text = "Ajouter interface paramètres";
+                                      });
+                                      Navigator.pop(context);
+                                  }),
+                              new ListTile(
+                                  leading: new Icon(Icons.exit_to_app),
+                                  title: Text('Déconnexion'),
+                                  onTap: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                      pushPage(context, AuthTypeSelector());
+                                  },
+                              ),
+                          ]),
+                      ),
+                  ],
+              ),
           ),
         ),
         appBar: new AppBar(
@@ -445,9 +455,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                 : Text("Tout afficher",
                                     style: TextStyle(color: Colors.black26))
                           ],
-                        ),
                       ),
-                    ],
                   ),
                 ),
                 Container(
