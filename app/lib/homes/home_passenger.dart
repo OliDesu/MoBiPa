@@ -460,36 +460,35 @@ class _PassengerHomeState extends State<PassengerHome> {
                         ),
                     ),
 
-                  Container(
-                      child: Row(children: <Widget>[
+                        Container(
+                            child: Row(children: <Widget>[
 
-                        SafeArea(
-                          child: RaisedButton(
-                            onPressed: () {
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+                              SafeArea(
+                                child: RaisedButton(
+                                  onPressed: () {
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(60.0)),
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Ink(
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
 
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width, minHeight: 50.0),
-
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Devenir conducteur",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
-                                ),
-                              ),
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(30.0)),
+                                    child: Container(
+                                      constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Devenir un conducteur",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 15),
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
