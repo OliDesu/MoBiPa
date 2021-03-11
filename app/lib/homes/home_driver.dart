@@ -226,201 +226,206 @@ class _DriverHomeState extends State<DriverHome> {
         ),
         body: new SingleChildScrollView(
 
-            child: Column(children: [
+            child: SafeArea(
+              child: Column(children: [
 
-              Container(
-                child: Text(
-                  'Actualités',
-                  style: TextStyle(height: 2, fontSize: 30),
+                Container(
+                  child: Text(
+                    'Actualités',
+                    style: TextStyle(height: 2, fontSize: 30),
+                  ),
                 ),
-              ),
-              Container(
-                  child: new Column(children: [
-                    Image(image: AssetImage('assets/car.png')),
-                  ])),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    new Container(
-                        child: new Column(children: [
-                          Text(
-                            'Besoin de plus d\'informations ?',
-                            style: TextStyle(height: 2, fontSize: 25),
-                          ),
-                        ])),
-                    Container(
-                      margin: EdgeInsets.all(16.0),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(description,
-                              maxLines: descTextShowFlag ? 8 : 1,
-                              textAlign: TextAlign.start),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                descTextShowFlag = !descTextShowFlag;
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                descTextShowFlag
-                                    ? Text(
-                                  "Moins afficher",
-                                  style: TextStyle(color: Colors.black26),
-                                )
-                                    : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.black26))
-                              ],
+                Container(
+                    child: new Column(children: [
+                      Image(image: AssetImage('assets/car.png')),
+                    ])),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      new Container(
+                          child: new Column(children: [
+                            Text(
+                              'Besoin de plus d\'informations ?',
+                              style: TextStyle(height: 2, fontSize: 25),
                             ),
-                          ),
-                        ],
+                          ])),
+                      Container(
+                        margin: EdgeInsets.all(16.0),
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(description,
+                                maxLines: descTextShowFlag ? 8 : 1,
+                                textAlign: TextAlign.start),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  descTextShowFlag = !descTextShowFlag;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  descTextShowFlag
+                                      ? Text(
+                                    "Moins afficher",
+                                    style: TextStyle(color: Colors.black26),
+                                  )
+                                      : Text("Tout afficher",
+                                      style: TextStyle(color: Colors.black26))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                        child: Row(children: <Widget>[
-                          RaisedButton(
-                            onPressed: () {
-                              pushPage(context, Contact());
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+                      Container(
+                          child: Row(children: <Widget>[
+                            RaisedButton(
+                              onPressed: () {
+                                pushPage(context, Contact());
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(60.0)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
 
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Nous contacter",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Nous contacter",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
                             ),
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              pushPage(context, Data_Management());
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
+                            RaisedButton(
+                              onPressed: () {
+                                pushPage(context, Data_Management());
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(60.0)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
 
 
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Utilisation des données",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Utilisation des données",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
                             ),
-                          ),
-                        ])),
-                    Container(
-                      child: Text('\n'),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  child: new Column(children: [
-                    Image(image: AssetImage('assets/queue.png')),
-                  ])),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    new Container(
-                        child: new Column(children: [
-                          Text(
-                            'Les Bénéficiaires',
-                            style: TextStyle(height: 2, fontSize: 25),
-                          ),
-                        ])),
-                    Container(
-                      margin: EdgeInsets.all(16.0),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(description1,
-                              maxLines: descTextShowFlag1 ? 8 : 1,
-                              textAlign: TextAlign.start),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                descTextShowFlag1 = !descTextShowFlag1;
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                descTextShowFlag1
-                                    ? Text(
-                                  "Moins afficher",
-                                  style: TextStyle(color: Colors.black26),
-                                )
-                                    : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.black26))
-                              ],
-                            ),
-                          ),
-                        ],
+                          ])),
+                      Container(
+                        child: Text('\n'),
                       ),
-                    ),
-                    Container(
-                        child: Row(children: <Widget>[
-                          RaisedButton(
-                            onPressed: () {
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0)),
-                            padding: EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+                    ],
+                  ),
+                ),
+                Container(
+                    child: new Column(children: [
+                      Image(image: AssetImage('assets/queue.png')),
+                    ])),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      new Container(
+                          child: new Column(children: [
+                            Text(
+                              'Les Bénéficiaires',
+                              style: TextStyle(height: 2, fontSize: 25),
+                            ),
+                          ])),
+                      Container(
+                        margin: EdgeInsets.all(16.0),
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(description1,
+                                maxLines: descTextShowFlag1 ? 8 : 1,
+                                textAlign: TextAlign.start),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  descTextShowFlag1 = !descTextShowFlag1;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  descTextShowFlag1
+                                      ? Text(
+                                    "Moins afficher",
+                                    style: TextStyle(color: Colors.black26),
+                                  )
+                                      : Text("Tout afficher",
+                                      style: TextStyle(color: Colors.black26))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          child: Row(children: <Widget>[
+
+                            SafeArea(
+                              child: RaisedButton(
+                                onPressed: () {
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(60.0)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
 
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(30.0)),
+                                  child: Container(
+                                    constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Devenir un passager",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white, fontSize: 15),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Devenir un passager",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                               ),
                             ),
-                          ),
-                        ])),
-                  ],
+                          ])),
+                    ],
+                  ),
                 ),
-              ),
-            ])));
+              ]),
+            )));
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
