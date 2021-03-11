@@ -113,14 +113,16 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
 
                   alignment: Alignment.center,
                   child: const Text(
-                    'Connexion',
+                    'Connexion' ,style: TextStyle(color: Colors.white),
+
                   ),
                 ),
                 Text('\n'),
                 TextFormField(
+
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  cursorColor: Colors.white,
+                  decoration: const InputDecoration(labelText: 'Email',labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre Email';
                     return null;
@@ -130,7 +132,8 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
 
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Mot de passe'),
+                  decoration: const InputDecoration(labelText: 'Mot de passe',labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre mot de passe';
                     return null;
