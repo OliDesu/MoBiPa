@@ -120,7 +120,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email'),
-
+                  cursorColor: Colors.white,
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre Email';
                     return null;
