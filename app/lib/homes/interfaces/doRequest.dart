@@ -322,9 +322,10 @@ Widget _buildReturn(BuildContext context){
                                                 ElevatedButton(
                                                     onPressed: () async {
                                                         await record.reference
-                                                            .update(
-                                                            {'status': 'closed'});
-                                                        Navigator.of(context).pop();
+                                                            .delete();
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(builder: (_) => DoRequest())
+                                                        );
                                                     },
                                                     child: Text('Oui')
                                                 ),
