@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_signin_button/button_builder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -94,7 +95,10 @@ class _AccountState extends State<Account> {
     return new Scaffold(
 
         appBar: new AppBar(
-          title: new Text("Interface compte "),
+          backgroundColor: Colors.white38,
+          centerTitle: true,
+
+          title: new Text("Mon compte "),
         ),
         body: new Form(
       key: _formKey,
@@ -104,6 +108,7 @@ class _AccountState extends State<Account> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Image.asset('assets/account.png'),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -114,7 +119,7 @@ class _AccountState extends State<Account> {
                   return null;
                 },
               ),
-
+Text('\n'),
               TextFormField(
                 controller: _lastNameController,
                 decoration: const InputDecoration(labelText: 'Nom de famille'),
@@ -125,6 +130,7 @@ class _AccountState extends State<Account> {
                   return null;
                 },
               ),
+              Text('\n'),
               TextFormField(
                 controller: _firstNameController,
                 decoration: const InputDecoration(labelText: 'Prénom'),
@@ -135,6 +141,7 @@ class _AccountState extends State<Account> {
                   return null;
                 },
               ),
+              Text('\n'),
               TextFormField(
                 controller: _phoneNumberController,
                 decoration: const InputDecoration(labelText: 'Numéro de téléphone'),
@@ -150,16 +157,36 @@ class _AccountState extends State<Account> {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 alignment: Alignment.center,
-                child: SignInButtonBuilder(
-                  icon: Icons.person_add,
-                  backgroundColor: Colors.blueGrey,
+                child: RaisedButton(
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       await _update();
                     }
                     Navigator.pop(context);
                   },
-                  text: 'Sauvegarder',
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(60.0)),
+                  padding: EdgeInsets.all(0.0),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0x6e46e3), Color(0x6e46e3)],
+
+
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Sauvegarder",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Container(
@@ -173,3 +200,5 @@ class _AccountState extends State<Account> {
     ));
   }
 }
+
+

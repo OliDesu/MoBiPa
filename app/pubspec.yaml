@@ -72,6 +72,12 @@ flutter:
     - mobipa.png
     - assets/walking.png
     - assets/signin.png
+    - assets/car.png
+    - assets/community.png
+    - assets/account.png
+    - assets/queue.png
+    - assets/notfound.png
+    - assets/register.png
     - assets/maps_marker.png
     - assets/passenger_marker.png
 
