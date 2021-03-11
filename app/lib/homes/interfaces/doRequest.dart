@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
+import 'package:app/homes/home_driver.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:location/location.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
@@ -18,6 +20,13 @@ import 'package:app/Models/driver.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui' as ui;
 
+
+enum Status {
+    open,
+    processing,
+    picked,
+    closed
+}
 
 class DoRequest extends StatefulWidget {
 
@@ -27,12 +36,18 @@ class DoRequest extends StatefulWidget {
 
 class _DoRequestState extends State<DoRequest> {
 
+
     Utilisateur passenger;
     String imageUrl;
     bool _successPassenger = false;
     bool _successImage = false;
 
+    Status _status = Status.open;
+
     Map<String, Marker> _markers = {};
+    Set<Polyline> _polylines = {};
+    List<LatLng> polylineCoordinates = [];
+    PolylinePoints polylinePoints = PolylinePoints();
     GoogleMapController _controller;
     Location _location = Location();
 
@@ -55,13 +70,20 @@ class _DoRequestState extends State<DoRequest> {
         return Scaffold(
             appBar: AppBar(
                 title: Text('Mon trajet'),
+                leading: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => DriverHome()),
+                        );
+                    },
+                ),
             ),
             body: Container(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('requests')
                         .where('driverId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                        .where('status', isEqualTo: 'processing')
                         .snapshots(),
                     builder: (context, snapshot) {
                         if (!snapshot.hasData) return LinearProgressIndicator();
@@ -83,6 +105,7 @@ class _DoRequestState extends State<DoRequest> {
         void _onMapCreated(GoogleMapController controller) {
             _controller = controller;
             _markers.clear();
+            _polylines.clear();
             setState(() {
                 final startMarker = Marker(
                     markerId: MarkerId('depart'),
@@ -122,9 +145,26 @@ class _DoRequestState extends State<DoRequest> {
                     .doc(record.reference.id)
                     .update({'driverLon': l.longitude});
             });
+
+            setPolylines(record);
         }
 
         _getPassenger(record.passengerId);
+
+        switch (record.status) {
+            case 'open' :
+                _status = Status.open;
+                break;
+            case 'processing' :
+                _status = Status.processing;
+                break;
+            case 'picked' :
+                _status = Status.picked;
+                break;
+            case 'closed' :
+                _status = Status.closed;
+                break;
+        }
 
         if (!_successPassenger || !_successImage) {
             return Center(
@@ -132,63 +172,188 @@ class _DoRequestState extends State<DoRequest> {
             );
         }
 
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget> [
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(8.0),
+        if (_status == Status.processing) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                    Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 2,
+                        child: GoogleMap(
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                    record.startLat, record.startLon),
+                                zoom: 15,
+                            ),
+                            markers: _markers.values.toSet(),
+                            myLocationEnabled: true,
+                        ),
                     ),
-                    height: MediaQuery.of(context).size.height/2,
-                    child: GoogleMap(
+                    Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text('Votre passager : ', textScaleFactor: 1.2,
+                            textAlign: TextAlign.start),
+                    ),
+                    Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.2,
+                                    ),
+                                ),
+                            ),
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: <Widget>[
+                                    Text(passenger.firstName + ' ' +
+                                        passenger.lastName,
+                                        textScaleFactor: 1.2,
+                                        textAlign: TextAlign.start),
+                                    Text('Tel : ' + passenger.tel,
+                                        textScaleFactor: 1.2,
+                                        textAlign: TextAlign.start),
+                                ],
+                            ),
+                        ),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                            ElevatedButton(
+                                onPressed: () =>
+                                    launch("tel://" + passenger.tel),
+                                child: Text("Appeler"),
+                            ),
+                        ],
+                    ),
+                    FloatingActionButton(
+                        onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    AlertDialog(
+                                        title: Text('Validation'),
+                                        content: Text(
+                                            'Avez-vous bien récupéré ${passenger
+                                                .firstName} ?'),
+                                        actions: <Widget>[
+                                            ElevatedButton(
+                                                onPressed: () async {
+                                                    await record.reference
+                                                        .update(
+                                                        {'status': 'picked'});
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(builder: (_) => DoRequest())
+                                                    );
+                                                },
+                                                child: Text('Oui')
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                },
+                                                child: Text('Non'))
+                                        ],
+                                    )
+                            );
+                        },
+                        child: Icon(Icons.check, color: Colors.white),
+                        backgroundColor: Colors.green,
+                    ),
+                ],
+            );
+        }
+        else if (_status == Status.picked) {
+            return Stack(
+                children: <Widget> [
+                    GoogleMap(
                         onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
-                            target: LatLng(record.startLat, record.startLon),
+                            target: LatLng(
+                                record.startLat, record.startLon),
                             zoom: 15,
                         ),
                         markers: _markers.values.toSet(),
+                        polylines: _polylines,
                         myLocationEnabled: true,
                     ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Votre passager : ',textScaleFactor: 1.2, textAlign: TextAlign.start),
-                ),
-                Image.network(imageUrl, height: 100, fit: BoxFit.scaleDown),
-                Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.2,
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: FloatingActionButton(
+                            onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                            title: Text('Validation'),
+                                            content: Text(
+                                                'Avez-vous bien déposé ${passenger
+                                                    .firstName} ?'),
+                                            actions: <Widget>[
+                                                ElevatedButton(
+                                                    onPressed: () async {
+                                                        await record.reference
+                                                            .update(
+                                                            {'status': 'closed'});
+                                                        Navigator.of(context).pop();
+                                                    },
+                                                    child: Text('Oui')
+                                                ),
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                    },
+                                                    child: Text('Non'))
+                                            ],
+                                        )
+                                );
+                            },
+                            child: Icon(Icons.check,color: Colors.white),
+                            backgroundColor: Colors.blue,
+                        ),
+                    ),
+                ],
+            );
+        }
+        else {
+            return Center(
+                child: Wrap(
+                    children: <Widget>[
+                        Container(
+                            height: MediaQuery.of(context).size.height*0.20,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Center(
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('Vous n\'avez pas de course actuellement'),
                                 ),
                             ),
                         ),
-                        width: MediaQuery.of(context).size.width,
-                        child:  Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                                Text(passenger.firstName + ' ' + passenger.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                                Text('Tel : ' + passenger.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                            ],
-                        ),
-                    ),
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                        ElevatedButton(
-                            onPressed: () => launch("tel://"+passenger.tel),
-                            child: Text("Appeler"),
-                        ),
                     ],
                 ),
-            ],
-        );
+            );
+        }
     }
+
 
     Future<void> _getPassenger(String passengerId) async {
         await FirebaseFirestore.instance.collection('utilisateur').doc(passengerId).get()
@@ -215,9 +380,48 @@ class _DoRequestState extends State<DoRequest> {
         return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
     }
 
+    TValue case2<TOptionType, TValue>(
+        TOptionType selectedOption,
+        Map<TOptionType, TValue> branches, [
+            TValue defaultValue = null,
+        ]) {
+        if (!branches.containsKey(selectedOption)) {
+            return defaultValue;
+        }
+
+        return branches[selectedOption];
+    }
+
+    void setPolylines(Record record) async {
+
+        List<PointLatLng> result = await
+        polylinePoints?.getRouteBetweenCoordinates(
+            'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+            record.startLat,
+            record.startLon,
+            record.destinationLat,
+            record.destinationLon);
+
+        if (result.isNotEmpty) {
+            result.forEach((PointLatLng point) {
+                polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+            });
+        }
+
+        setState(() {
+            Polyline polyline = Polyline(
+                polylineId: PolylineId('trajet'),
+                color: Colors.blue,
+                points: polylineCoordinates
+            );
+            _polylines.add(polyline);
+        });
+    }
+
 }
 
 class Record {
+    final String status;
     final String firstName;
     final String lastName;
     final String start;
@@ -234,6 +438,7 @@ class Record {
     Record.fromMap(Map<String, dynamic> map, {this.reference})
         : assert(map['firstName'] != null),
             assert(map['lastName'] != null),
+            assert(map['status'] != null),
             assert(map['start'] != null),
             assert(map['destination'] != null),
             assert(map['passengerId'] != null),
@@ -245,6 +450,7 @@ class Record {
             assert(map['passengerLon'] != null),
             firstName = map['firstName'],
             lastName = map['lastName'],
+            status = map['status'],
             start = map['start'],
             destination = map['destination'],
             startLat = map['startLat'],
