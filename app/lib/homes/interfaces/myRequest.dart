@@ -39,6 +39,8 @@ class _MyRequestState extends State<MyRequest> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
+                centerTitle: true,
+                backgroundColor: Colors.white38,
                 title: Text('Mon trajet'),
             ),
             body: Container(
@@ -52,7 +54,7 @@ class _MyRequestState extends State<MyRequest> {
                         if (!snapshot.hasData) return LinearProgressIndicator();
                         else {
                             if (snapshot.data.size == 0){
-                                return Text('RAS');
+                                return _buildReturn(context);
                             }
                             return _buildColumn(context, snapshot.data.docs.elementAt(0));
                         }
@@ -61,7 +63,15 @@ class _MyRequestState extends State<MyRequest> {
             ),
         );
     }
+    Widget _buildReturn(BuildContext context){
+        return Column(
+            children: [
 
+                Image.asset('assets/notfound.png'),
+                Text('Aucun trajet n\'est disponible',style: TextStyle(fontSize: 25),),
+            ],
+        );
+    }
     Widget _buildColumn(BuildContext context, DocumentSnapshot data) {
         Record record = Record.fromSnapshot(data);
 

@@ -30,6 +30,7 @@ ThemeData buildTheme() {
       textTheme: ButtonTextTheme.primary,
     ),
     scaffoldBackgroundColor: yBackgroundWhite,
+
     cardColor: yBackgroundWhite,
     cardTheme: CardTheme(
       shape: RoundedRectangleBorder(
@@ -51,7 +52,8 @@ ThemeData buildTheme() {
     inputDecorationTheme: InputDecorationTheme(
       // Decorate the text inputs
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: BorderRadius.all(Radius.circular(7.0)),
+
       ),
     ),
   );
@@ -63,7 +65,7 @@ TextTheme _buildTextTheme(TextTheme base) {
     headline: base.headline.copyWith(
       fontWeight: FontWeight.w500,
     ),
-    title: base.title.copyWith(fontSize: 18.0),
+    title: base.title.copyWith(fontSize: 15.0),
     caption: base.caption.copyWith(
       fontWeight: FontWeight.w400,
       fontSize: 14.0,

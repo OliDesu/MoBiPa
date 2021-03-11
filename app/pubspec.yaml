@@ -71,6 +71,11 @@ flutter:
     - mobipa.png
     - assets/walking.png
     - assets/signin.png
+    - assets/car.png
+    - assets/community.png
+    - assets/account.png
+    - assets/queue.png
+    - assets/notfound.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

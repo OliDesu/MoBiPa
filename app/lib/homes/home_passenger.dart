@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
 import 'package:app/homes/interfaces/data_management.dart';
+import 'package:app/widget/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class PassengerHome extends StatefulWidget {
 
 class _PassengerHomeState extends State<PassengerHome> {
   static final kInitialPosition = LatLng(-33.8567844, 151.213108);
-
+  final ThemeData Theme = buildTheme();
   PickResult selectedPlaceStart;
   PickResult selectedPlaceEnd;
 
@@ -35,6 +36,7 @@ class _PassengerHomeState extends State<PassengerHome> {
   bool _serviceEnabled;
   PermissionStatus _permissionGranted;
   LocationData _locationData;
+
 
   Future<Uint8List> getMarker() async {
     ByteData byteData =
@@ -61,6 +63,7 @@ class _PassengerHomeState extends State<PassengerHome> {
       ),
       actions: <Widget>[
         new ElevatedButton(
+
           onPressed: () async {
             if (selectedPlaceStart != null && selectedPlaceEnd != null) {
               FirebaseRequest order = new FirebaseRequest(
@@ -180,6 +183,7 @@ class _PassengerHomeState extends State<PassengerHome> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Colors.white,
         drawer: new Drawer(
           child: new ListView(
             children: <Widget>[
@@ -279,6 +283,9 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
         ),
         appBar: new AppBar(
+          backgroundColor: Colors.white38,
+          centerTitle: true,
+
           title: new Text(
               "Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName}"),
         ),
@@ -292,7 +299,7 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
           Container(
               child: new Column(children: [
-            Image(image: AssetImage('assets/voiture.png')),
+            Image(image: AssetImage('assets/car.png')),
           ])),
           Container(
             child: Column(
@@ -324,10 +331,10 @@ class _PassengerHomeState extends State<PassengerHome> {
                             descTextShowFlag
                                 ? Text(
                                     "Moins afficher",
-                                    style: TextStyle(color: Colors.white38),
+                                    style: TextStyle(color: Colors.black26),
                                   )
                                 : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.white38))
+                                    style: TextStyle(color: Colors.black26))
                           ],
                         ),
                       ),
@@ -336,41 +343,62 @@ class _PassengerHomeState extends State<PassengerHome> {
                 ),
                 Container(
                     child: Row(children: <Widget>[
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.white)),
-                    color: Colors.grey,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(8.0),
-                    onPressed: () {
-                      pushPage(context, Contact());
-                    },
-                    child: Text(
-                      "     Contactez nous    ".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.white)),
-                    color: Colors.grey,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(8.0),
-                    onPressed: () {
-                      pushPage(context, Data_Management());
+                       RaisedButton(
+                        onPressed: () {
+                          pushPage(context, Contact());
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
 
-                    },
-                    child: Text(
-                      "Utilisation des données".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
+
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Nous contacter",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                      RaisedButton(
+                        onPressed: () {
+                          pushPage(context, Data_Management());
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
+
+
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Utilisation des données",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ),
                 ])),
                 Container(
                   child: Text('\n'),
@@ -380,7 +408,7 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
           Container(
               child: new Column(children: [
-            Image(image: AssetImage('assets/driver.png')),
+            Image(image: AssetImage('assets/community.png')),
           ])),
           Container(
             child: Column(
@@ -412,10 +440,10 @@ class _PassengerHomeState extends State<PassengerHome> {
                             descTextShowFlag1
                                 ? Text(
                                     "Moins afficher",
-                                    style: TextStyle(color: Colors.white38),
+                                    style: TextStyle(color: Colors.black26),
                                   )
                                 : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.white38))
+                                    style: TextStyle(color: Colors.black26))
                           ],
                         ),
                       ),
@@ -424,21 +452,34 @@ class _PassengerHomeState extends State<PassengerHome> {
                 ),
                 Container(
                     child: Row(children: <Widget>[
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.white)),
-                    color: Colors.grey,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(8.0),
-                    onPressed: () {},
-                    child: Text(
-                      "     Devenir Conducteur   ".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
+
+                      RaisedButton(
+                        onPressed: () {
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60.0)),
+                        padding: EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: Container(
+                            constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Devenir conducteur",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                 ])),
               ],
             ),

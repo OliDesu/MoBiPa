@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_fonts/google_fonts.dart';
 import 'homes/home_passenger.dart';
 import 'homes/home_driver.dart';
 import 'package:app/Models/user.dart' as reposit;
@@ -113,17 +114,20 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                   alignment: Alignment.center,
                   child: const Text(
                     'Connexion',
-                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
+                Text('\n'),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email'),
+
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre Email';
                     return null;
                   },
                 ),
+                Text('\n'),
+
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(labelText: 'Mot de passe'),

@@ -45,6 +45,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text(widget.post["start"]),
       ),
       body: Container(
@@ -206,6 +207,8 @@ class _DriverHomeState extends State<DriverHome> {
           ),
         ),
         appBar: new AppBar(
+          backgroundColor: Colors.white38,
+          centerTitle: true,
           title: new Text(
               "Bienvenue "),
         ),
@@ -221,7 +224,7 @@ class _DriverHomeState extends State<DriverHome> {
               ),
               Container(
                   child: new Column(children: [
-                    Image(image: AssetImage('assets/voiture.png')),
+                    Image(image: AssetImage('assets/car.png')),
                   ])),
               Container(
                 child: Column(
@@ -253,10 +256,10 @@ class _DriverHomeState extends State<DriverHome> {
                                 descTextShowFlag
                                     ? Text(
                                   "Moins afficher",
-                                  style: TextStyle(color: Colors.white38),
+                                  style: TextStyle(color: Colors.black26),
                                 )
                                     : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.white38))
+                                    style: TextStyle(color: Colors.black26))
                               ],
                             ),
                           ),
@@ -265,38 +268,59 @@ class _DriverHomeState extends State<DriverHome> {
                     ),
                     Container(
                         child: Row(children: <Widget>[
-                          FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.white)),
-                            color: Colors.grey,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(8.0),
+                          RaisedButton(
                             onPressed: () {
                               pushPage(context, Contact());
                             },
-                            child: Text(
-                              "     Contactez nous    ".toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 14.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Nous contacter",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
                           ),
-                          FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.white)),
-                            color: Colors.grey,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(8.0),
+                          RaisedButton(
                             onPressed: () {
                               pushPage(context, Data_Management());
-
                             },
-                            child: Text(
-                              "Utilisation des données".toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 14.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
+
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 200.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Utilisation des données",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
                           ),
@@ -309,7 +333,7 @@ class _DriverHomeState extends State<DriverHome> {
               ),
               Container(
                   child: new Column(children: [
-                    Image(image: AssetImage('assets/beneficiaire.jpg')),
+                    Image(image: AssetImage('assets/queue.png')),
                   ])),
               Container(
                 child: Column(
@@ -341,10 +365,10 @@ class _DriverHomeState extends State<DriverHome> {
                                 descTextShowFlag1
                                     ? Text(
                                   "Moins afficher",
-                                  style: TextStyle(color: Colors.white38),
+                                  style: TextStyle(color: Colors.black26),
                                 )
                                     : Text("Tout afficher",
-                                    style: TextStyle(color: Colors.white38))
+                                    style: TextStyle(color: Colors.black26))
                               ],
                             ),
                           ),
@@ -353,18 +377,30 @@ class _DriverHomeState extends State<DriverHome> {
                     ),
                     Container(
                         child: Row(children: <Widget>[
-                          FlatButton(
+                          RaisedButton(
+                            onPressed: () {
+                            },
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.white)),
-                            color: Colors.grey,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(8.0),
-                            onPressed: () {},
-                            child: Text(
-                              "     Devenir un passager   ".toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 14.0,
+                                borderRadius: BorderRadius.circular(60.0)),
+                            padding: EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: 410.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Devenir un passager",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
                           ),
@@ -379,6 +415,8 @@ class _DriverHomeState extends State<DriverHome> {
 
       return Scaffold(
         appBar: new AppBar(
+          backgroundColor: Colors.white38,
+          centerTitle: true,
           title : Text("Trajets disponibles"),
         ),
         body:
@@ -399,12 +437,13 @@ class _DriverHomeState extends State<DriverHome> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.black26),
+                  borderRadius: BorderRadius.circular(2.0),
               ),
               child: Material(
                   child: ListTile(
                       title: Text(record.firstName + ' ' + record.lastName),
+                      tileColor: Colors.grey,
                       subtitle: Text(record.start + ' - ' + record.destination),
                       onTap: () {
                           showDialog(

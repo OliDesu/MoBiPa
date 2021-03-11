@@ -41,7 +41,8 @@ class AuthExampleApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Firebase Example App',
-        theme: Theme,
+        theme: Theme
+        ,
         home: Scaffold(
           body: AuthTypeSelector(),
         ),
