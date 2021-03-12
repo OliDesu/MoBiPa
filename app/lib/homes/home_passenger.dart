@@ -183,73 +183,72 @@ class _PassengerHomeState extends State<PassengerHome> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      backgroundColor: Colors.white,
-        drawer: new Drawer(
-          child: new ListView(
-            children: <Widget>[
-              new Container(
-                  child: new DrawerHeader(
-                      child: new Container(
-                child: Text('Mobipa'),
-              ))),
-              new Container(
-                child: new Column(children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.info),
-                      title: Text('Mon compte'),
-                      onTap: () {
-                        pushPage(context, Account());
-                      }),
-                  new ListTile(
-                      leading: new Icon(Icons.list),
-                      title: Text('Mes trajets'),
-                      onTap: () {
-                        pushPage(context, MyRequest());
-                      }),
-                  new ListTile(
-                      leading: new Icon(Icons.directions_car),
-                      title: Text('Conducteurs à proximité'),
-                      onTap: () {
-                        setState(() {
-                          text = "Ajouter interface conducteur";
-                        });
-                        Navigator.pop(context);
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.map),
-                    title: Text('Nouveau trajet'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PlacePicker(
-                              apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
-                              initialPosition:
-                                  _PassengerHomeState.kInitialPosition,
-                              useCurrentLocation: true,
-                              selectInitialPosition: true,
-                              usePlaceDetailSearch: true,
-                              onPlacePicked: (result) {
-                                selectedPlaceStart = result;
-                                Navigator.of(context).pop();
-                                setState(() {});
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return PlacePicker(
-                                        apiKey:
-                                            'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
-                                        initialPosition: _PassengerHomeState
-                                            .kInitialPosition,
-                                        useCurrentLocation: true,
-                                        selectInitialPosition: true,
-                                        usePlaceDetailSearch: true,
-                                        onPlacePicked: (result) {
-                                          selectedPlaceEnd = result;
-
+      return new Scaffold(
+          backgroundColor: Colors.white,
+          drawer: new Drawer(
+              child: new ListView(
+                  children: <Widget>[
+                      new Container(
+                          child: new DrawerHeader(
+                              child: new Container(
+                                  child: Text('Mobipa'),
+                              ))),
+                      new Container(
+                          child: new Column(children: <Widget>[
+                              new ListTile(
+                                  leading: new Icon(Icons.info),
+                                  title: Text('Mon compte'),
+                                  onTap: () {
+                                      pushPage(context, Account());
+                                  }),
+                              new ListTile(
+                                  leading: new Icon(Icons.list),
+                                  title: Text('Mes trajets'),
+                                  onTap: () {
+                                      pushPage(context, MyRequest());
+                                  }),
+                              new ListTile(
+                                  leading: new Icon(Icons.directions_car),
+                                  title: Text('Conducteurs à proximité'),
+                                  onTap: () {
+                                      setState(() {
+                                          text = "Ajouter interface conducteur";
+                                      });
+                                      Navigator.pop(context);
+                                  }),
+                              new ListTile(
+                                  leading: new Icon(Icons.map),
+                                  title: Text('Nouveau trajet'),
+                                  onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) {
+                                                  return PlacePicker(
+                                                      apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+                                                      initialPosition:
+                                                      _PassengerHomeState.kInitialPosition,
+                                                      useCurrentLocation: true,
+                                                      selectInitialPosition: true,
+                                                      usePlaceDetailSearch: true,
+                                                      onPlacePicked: (result) {
+                                                          selectedPlaceStart = result;
+                                                          Navigator.of(context).pop();
+                                                          setState(() {});
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) {
+                                                                      return PlacePicker(
+                                                                          apiKey:
+                                                                          'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+                                                                          initialPosition: _PassengerHomeState
+                                                                              .kInitialPosition,
+                                                                          useCurrentLocation: true,
+                                                                          selectInitialPosition: true,
+                                                                          usePlaceDetailSearch: true,
+                                                                          onPlacePicked: (result) {
+                                                                              selectedPlaceEnd = result;
                                                                               Navigator.of(context).pop();
                                                                               setState(() {});
                                                                               showDialog(
@@ -293,211 +292,217 @@ class _PassengerHomeState extends State<PassengerHome> {
           ),
 
 
-        appBar: new AppBar(
-          backgroundColor: Colors.white38,
-          centerTitle: true,
+          appBar: new AppBar(
+              backgroundColor: Colors.white38,
+              centerTitle: true,
 
-          title: new Text(
-              "Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName}"),
-        ),
-        body: new SingleChildScrollView(
-            child: SafeArea(
-              child: Column(children: [
-          Container(
-              child: Text(
-                'Actualités',
-                style: TextStyle(height: 2, fontSize: 30),
-              ),
+              title: new Text(
+                  "Bienvenue ${Provider.of<repo.UserRepo>(this.context, listen: false).connectedUtilisateur.firstName}"),
           ),
-          Container(
-                child: new Column(children: [
-              Image(image: AssetImage('assets/car.png')),
-          ])),
-          Container(
-              child: Column(
-                children: <Widget>[
-                  new Container(
-                      child: new Column(children: [
-                    Text(
-                      'Besoin de plus d\'informations ?',
-                      style: TextStyle(height: 2, fontSize: 25),
-                    ),
-                  ])),
-                  Container(
-                    margin: EdgeInsets.all(16.0),
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(description,
-                            maxLines: descTextShowFlag ? 8 : 1,
-                            textAlign: TextAlign.start),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              descTextShowFlag = !descTextShowFlag;
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              descTextShowFlag
-                                  ? Text(
-                                      "Moins afficher",
-                                      style: TextStyle(color: Colors.black26),
-                                    )
-                                  : Text("Tout afficher",
-                                      style: TextStyle(color: Colors.black26))
-                            ],
+          body: new SingleChildScrollView(
+              child: SafeArea(
+                  child: Column(children: [
+                      Container(
+                          child: Text(
+                              'Actualités',
+                              style: TextStyle(height: 2, fontSize: 30),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      child: Row(children: <Widget>[
-                         RaisedButton(
-                          onPressed: () {
-                            pushPage(context, Contact());
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(60.0)),
-                          padding: EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
-
-
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(30.0)),
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Nous contacter",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 15),
-                              ),
-                            ),
-                          ),
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            pushPage(context, Data_Management());
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(60.0)),
-                          padding: EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
-
-
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(30.0)),
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2 , minHeight: 50.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Utilisation des données",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 15),
-                              ),
-                            ),
-                          ),
-                        ),
-                  ])),
-                  Container(
-                    child: Text('\n'),
-                  ),
-                ],
-              ),
-          ),
-          Container(
-                child: new Column(children: [
-              Image(image: AssetImage('assets/community.png')),
-          ])),
-          Container(
-              child: Column(
-                children: <Widget>[
-                  new Container(
-                      child: new Column(children: [
-                    Text(
-                      'Conducteur',
-                      style: TextStyle(height: 2, fontSize: 25),
-                    ),
-                  ])),
-                  Container(
-                    margin: EdgeInsets.all(16.0),
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(description1,
-                            maxLines: descTextShowFlag1 ? 8 : 1,
-                            textAlign: TextAlign.start),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              descTextShowFlag1 = !descTextShowFlag1;
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              descTextShowFlag1
-                                  ? Text(
-                                      "Moins afficher",
-                                      style: TextStyle(color: Colors.black26),
-                                    )
-                                  : Text("Tout afficher",
-                                      style: TextStyle(color: Colors.black26))
-                            ],
-                        ),
-                    ),
-
-                        Container(
-                            child: Row(children: <Widget>[
-
-                              SafeArea(
-                                child: RaisedButton(
-                                  onPressed: () {
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(60.0)),
-                                  padding: EdgeInsets.all(0.0),
-                                  child: Ink(
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
-
-
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(30.0)),
-                                    child: Container(
-                                      constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Devenir un conducteur",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      Container(
+                          child: new Column(children: [
+                              Image(image: AssetImage('assets/car.png')),
+                          ])),
+                      Container(
+                          child: Column(
+                              children: <Widget>[
+                                  new Container(
+                                      child: new Column(children: [
+                                          Text(
+                                              'Besoin de plus d\'informations ?',
+                                              style: TextStyle(height: 2, fontSize: 25),
+                                          ),
+                                      ])),
+                                  Container(
+                                      margin: EdgeInsets.all(16.0),
+                                      child: new Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                              Text(description,
+                                                  maxLines: descTextShowFlag ? 8 : 1,
+                                                  textAlign: TextAlign.start),
+                                              InkWell(
+                                                  onTap: () {
+                                                      setState(() {
+                                                          descTextShowFlag = !descTextShowFlag;
+                                                      });
+                                                  },
+                                                  child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: <Widget>[
+                                                          descTextShowFlag
+                                                              ? Text(
+                                                              "Moins afficher",
+                                                              style: TextStyle(color: Colors.black26),
+                                                          )
+                                                              : Text("Tout afficher",
+                                                              style: TextStyle(color: Colors.black26))
+                                                      ],
+                                                  ),
+                                              ),
+                                          ],
                                       ),
-                                    ),
-                            ),
+                                  ),
+                                  Container(
+                                      child: Row(children: <Widget>[
+                                          RaisedButton(
+                                              onPressed: () {
+                                                  pushPage(context, Contact());
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(60.0)),
+                                              padding: EdgeInsets.all(0.0),
+                                              child: Ink(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                                          begin: Alignment.centerLeft,
+                                                          end: Alignment.centerRight,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(30.0)),
+                                                  child: Container(
+                                                      constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                                      alignment: Alignment.center,
+                                                      child: Text(
+                                                          "Nous contacter",
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                                      ),
+                                                  ),
+                                              ),
+                                          ),
+                                          RaisedButton(
+                                              onPressed: () {
+                                                  pushPage(context, Data_Management());
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(60.0)),
+                                              padding: EdgeInsets.all(0.0),
+                                              child: Ink(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [Color(0xffeb7c9c), Color( 0xff64B6FF)],
+
+
+                                                          begin: Alignment.centerLeft,
+                                                          end: Alignment.centerRight,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(30.0)),
+                                                  child: Container(
+                                                      constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2 , minHeight: 50.0),
+                                                      alignment: Alignment.center,
+                                                      child: Text(
+                                                          "Utilisation des données",
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                                      ),
+                                                  ),
+                                              ),
+                                          ),
+                                      ])),
+                                  Container(
+                                      child: Text('\n'),
+                                  ),
+                              ],
                           ),
-                        ),
-                  ])),
-                ],
-              ),
-          ),
-        ]))]),
-            )));
+                      ),
+                      Container(
+                          child: new Column(children: [
+                              Image(image: AssetImage('assets/community.png')),
+                          ])),
+                      Container(
+                          child: Column(
+                              children: <Widget>[
+                                  new Container(
+                                      child: new Column(children: [
+                                          Text(
+                                              'Conducteur',
+                                              style: TextStyle(height: 2, fontSize: 25),
+                                          ),
+                                      ])),
+                                  Container(
+                                      margin: EdgeInsets.all(16.0),
+                                      child: new Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                              Text(description1,
+                                                  maxLines: descTextShowFlag1 ? 8 : 1,
+                                                  textAlign: TextAlign.start),
+                                              InkWell(
+                                                  onTap: () {
+                                                      setState(() {
+                                                          descTextShowFlag1 = !descTextShowFlag1;
+                                                      });
+                                                  },
+                                                  child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: <Widget>[
+                                                          descTextShowFlag1
+                                                              ? Text(
+                                                              "Moins afficher",
+                                                              style: TextStyle(color: Colors.black26),
+                                                          )
+                                                              : Text("Tout afficher",
+                                                              style: TextStyle(color: Colors.black26))
+                                                      ],
+                                                  ),
+                                              ),
+
+                                              Container(
+                                                  child: Row(children: <Widget>[
+
+                                                      SafeArea(
+                                                          child: RaisedButton(
+                                                              onPressed: () {
+                                                              },
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(60.0)),
+                                                              padding: EdgeInsets.all(0.0),
+                                                              child: Ink(
+                                                                  decoration: BoxDecoration(
+                                                                      gradient: LinearGradient(
+                                                                          colors: [Color(0xff64B6FF), Color(0xffeb7c9c)],
+
+
+                                                                          begin: Alignment.centerLeft,
+                                                                          end: Alignment.centerRight,
+                                                                      ),
+                                                                      borderRadius: BorderRadius.circular(30.0)),
+                                                                  child: Container(
+                                                                      constraints: BoxConstraints(maxWidth: MediaQuery. of(context). size. width/2, minHeight: 50.0),
+                                                                      alignment: Alignment.center,
+                                                                      child: Text(
+                                                                          "Devenir un conducteur",
+                                                                          textAlign: TextAlign.center,
+                                                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                                                      ),
+                                                                  ),
+                                                              ),
+                                                          ),
+                                                      ),
+                                                  ])
+                                              ),
+                                          ],
+                                      ),
+                                  ),
+                              ]
+                          )
+                      )
+                  ]),
+              )
+          )
+      );
   }
 
 }
