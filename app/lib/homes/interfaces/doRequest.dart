@@ -177,6 +177,9 @@ Widget _buildReturn(BuildContext context){
             case 'closed' :
                 _status = Status.closed;
                 break;
+            default :
+                _status = Status.open;
+                break;
         }
 
         if (!_successPassenger || !_successImage) {

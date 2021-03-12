@@ -160,6 +160,7 @@ class _MyRequestState extends State<MyRequest> {
                 break;
             default :
                 _status = Status.open;
+                break;
         }
 
         if (!_successDriver || !_successImage) {
