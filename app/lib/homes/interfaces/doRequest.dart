@@ -314,7 +314,7 @@ Widget _buildReturn(BuildContext context){
                                                 ElevatedButton(
                                                     onPressed: () async {
                                                         await record.reference
-                                                            .delete();
+                                                            .update({'status': 'closed'});
                                                         Navigator.of(context).push(
                                                             MaterialPageRoute(builder: (_) => DoRequest())
                                                         );
@@ -337,26 +337,23 @@ Widget _buildReturn(BuildContext context){
                 ],
             );
         }
-        else {
+        else if (_status == Status.closed) {
             return Center(
-                child: Wrap(
-                    children: <Widget>[
-                        Container(
-                            height: MediaQuery.of(context).size.height*0.20,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Center(
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Vous n\'avez pas de course actuellement'),
-                                ),
-                            ),
-                        ),
-                    ],
+                child: Container(
+                    width: MediaQuery.of(context).size.width*0.90,
+                    height: MediaQuery.of(context).size.height*0.30,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                            Text('En attente de la confirmation du passager', style: TextStyle(fontSize: 25), textAlign: TextAlign.center),
+                            CircularProgressIndicator(),
+                        ],
+                    ),
                 ),
             );
+        }
+        else {
+            return _buildReturn(context);
         }
     }
 
