@@ -207,15 +207,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                   onTap: () {
                                       pushPage(context, MyRequest());
                                   }),
-                              new ListTile(
-                                  leading: new Icon(Icons.directions_car),
-                                  title: Text('Conducteurs à proximité'),
-                                  onTap: () {
-                                      setState(() {
-                                          text = "Ajouter interface conducteur";
-                                      });
-                                      Navigator.pop(context);
-                                  }),
+
                               new ListTile(
                                   leading: new Icon(Icons.map),
                                   title: Text('Nouveau trajet'),
@@ -268,15 +260,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                       );
                                   },
                               ),
-                              new ListTile(
-                                  leading: new Icon(Icons.settings),
-                                  title: Text('Paramètres'),
-                                  onTap: () {
-                                      setState(() {
-                                          text = "Ajouter interface paramètres";
-                                      });
-                                      Navigator.pop(context);
-                                  }),
+
                               new ListTile(
                                   leading: new Icon(Icons.exit_to_app),
                                   title: Text('Déconnexion'),
