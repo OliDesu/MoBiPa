@@ -49,7 +49,7 @@ class _Contact extends State<Contact> {
               companyName: 'MobiPA',
               companyColor: Colors.white,
               phoneNumberText: 'Téléphone',
-              phoneNumber: '+XXXXXXXXX',
+              phoneNumber: '+33760000084',
               website: 'https://mobipa.univ-grenoble-alpes.fr/',
               websiteText: 'Site web',
               githubUserName: 'https://github.com/OliDesu/MoBiPa',

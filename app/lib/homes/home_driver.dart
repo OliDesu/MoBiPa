@@ -192,7 +192,7 @@ class _DriverHomeState extends State<DriverHome> {
                           );
                         }),
                   ),
-                 
+
                   Material(
                     child: ListTile(
                       leading: new Icon(Icons.exit_to_app),
