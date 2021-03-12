@@ -185,19 +185,13 @@ class _MyRequestState extends State<MyRequest> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                                 Text(driver.firstName + ' ' + driver.lastName, textScaleFactor: 1.2, textAlign: TextAlign.start),
-                                Text('Tel : ' + driver.tel, textScaleFactor: 1.2, textAlign: TextAlign.start),
+                                ElevatedButton(
+                                    onPressed: () => launch("tel://"+driver.tel),
+                                    child: Text("Appeler"),
+                                ),
                             ],
                         ),
                     ),
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                        ElevatedButton(
-                            onPressed: () => launch("tel://"+driver.tel),
-                            child: Text("Appeler"),
-                        ),
-                    ],
                 ),
             ],
         );

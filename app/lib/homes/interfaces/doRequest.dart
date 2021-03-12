@@ -108,7 +108,7 @@ Widget _buildReturn(BuildContext context){
             children: [
 
                 Image.asset('assets/notfound.png'),
-                Text('Aucun trajet n\'est disponible',style: TextStyle(fontSize: 25),),
+                Text('Vous n\'avez pas de trajet actuellement. Vous pouvez en séléctionner dans l\'onglet \"Trajets disponibles\".',style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
             ],
         );
 }
@@ -238,22 +238,14 @@ Widget _buildReturn(BuildContext context){
                                         passenger.lastName,
                                         textScaleFactor: 1.2,
                                         textAlign: TextAlign.start),
-                                    Text('Tel : ' + passenger.tel,
-                                        textScaleFactor: 1.2,
-                                        textAlign: TextAlign.start),
+                                    ElevatedButton(
+                                        onPressed: () =>
+                                            launch("tel://" + passenger.tel),
+                                        child: Text("Appeler"),
+                                    ),
                                 ],
                             ),
                         ),
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                            ElevatedButton(
-                                onPressed: () =>
-                                    launch("tel://" + passenger.tel),
-                                child: Text("Appeler"),
-                            ),
-                        ],
                     ),
                     FloatingActionButton(
                         onPressed: () {
