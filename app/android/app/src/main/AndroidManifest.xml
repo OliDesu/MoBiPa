@@ -10,8 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="MobiPA"
+        android:icon="@mipmap/lancher_icon">
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c"/>
         <activity
