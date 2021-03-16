@@ -1,15 +1,9 @@
-import 'dart:async';
-import 'dart:typed_data';
 import 'package:app/widget/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:app/Models/user.dart' as repo;
-import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/data_management.dart';
@@ -35,10 +29,6 @@ class DetailPage extends StatefulWidget {
 
   @override
   _DetailPageState createState() => _DetailPageState();
-
-
-
-
 
 }
 
@@ -66,55 +56,6 @@ class _DetailPageState extends State<DetailPage> {
 }
 
 
-class _ListPageStates extends StatelessWidget {
-  @override
-  var firestoreInstance = FirebaseFirestore.instance;
-
-
-
-  Future fetchOrders() async {
-    QuerySnapshot qn = await firestoreInstance
-        .collection('requests')
-        .where('status', isEqualTo: 'open')
-        .get();
-    return qn.docs;
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text("Trajets disponibles"),
-      ),
-      body: Container(
-        child: FutureBuilder(
-            future: fetchOrders(),
-            // ignore: non_constant_identifier_names
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Text("Loading ..."));
-              } else {
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, index) {
-                      return ListTile(
-                          title: Text(snapshot.data[index]["start"]),
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder:(context) =>DetailPage(post:snapshot.data[index],)));
-                          }
-
-                      );
-                    });
-              }
-            }),
-      ),
-    );
-  }
-
-
-}
-
 class _DriverHomeState extends State<DriverHome> {
   Marker marker;
   Circle circle;
@@ -139,7 +80,9 @@ class _DriverHomeState extends State<DriverHome> {
       MaterialPageRoute<void>(builder: (_) => page),
     );
   }
+
   String text = "Ajouter actualités ici ";
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -167,7 +110,7 @@ class _DriverHomeState extends State<DriverHome> {
                   Material(
                     child: ListTile(
                         leading: new Icon(Icons.list),
-                        title: Text('Mes trajets'),
+                        title: Text('Mon trajet'),
                         onTap: () {
                           pushPage(context, DoRequest());
                         }),
@@ -199,7 +142,7 @@ class _DriverHomeState extends State<DriverHome> {
                       title: Text('Déconnexion'),
                       onTap: () async {
                         await FirebaseAuth.instance.signOut();
-                        pushPage(context, AuthTypeSelector());
+                        pushPage(context, Auth());
                       },
                     ),
                   ),

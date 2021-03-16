@@ -1,24 +1,18 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/utilisateur.dart';
 import 'package:app/homes/home_driver.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/user.dart' as repo;
-import 'package:provider/provider.dart';
-import 'package:app/Models/driver.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui' as ui;
+import 'package:app/Models/keys.dart';
 
 
 enum Status {
@@ -51,14 +45,23 @@ class _DoRequestState extends State<DoRequest> {
     GoogleMapController _controller;
     Location _location = Location();
 
+    String _googleApi;
+
     Uint8List mapsMarkerIcon;
     Uint8List passengerMarkerIcon;
 
     @override
-  void initState() {
-    super.initState();
-    loadMarkers();
-  }
+    void initState() {
+        super.initState();
+        loadMarkers();
+
+        Future<Secret> secret = SecretLoader(secretPath: "assets/secrets.json").load().then((value) {
+            setState(() {
+                _googleApi = value.apiKey;
+            });
+            return;
+        });
+    }
 
     void loadMarkers() async {
         mapsMarkerIcon = await getBytesFromAsset('assets/maps_marker.png', 100);
@@ -92,9 +95,6 @@ class _DoRequestState extends State<DoRequest> {
                         else {
                             if (snapshot.data.size == 0){
                                 return _buildReturn(context);
-
-
-
                             }
                             return _buildColumn(context, snapshot.data.docs.elementAt(0));
                         }
@@ -103,14 +103,15 @@ class _DoRequestState extends State<DoRequest> {
             ),
         );
     }
-Widget _buildReturn(BuildContext context){
-        return Column(
-            children: [
 
-                Image.asset('assets/notfound.png'),
-                Text('Vous n\'avez pas de trajet actuellement. Vous pouvez en séléctionner dans l\'onglet \"Trajets disponibles\".',style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
-            ],
-        );
+Widget _buildReturn(BuildContext context){
+    return Column(
+        children: [
+            Image.asset('assets/notfound.png'),
+            Text('Vous n\'avez pas de trajet actuellement. Vous pouvez en séléctionner dans l\'onglet \"Trajets disponibles\".',
+                style: TextStyle(fontSize: 25),textAlign: TextAlign.center,),
+        ],
+    );
 }
     Widget _buildColumn(BuildContext context, DocumentSnapshot data) {
         Record record = Record.fromSnapshot(data);
@@ -355,8 +356,14 @@ Widget _buildReturn(BuildContext context){
                 ),
             );
         }
-        else {
+        else if (_status == Status.open) {
             return _buildReturn(context);
+        }
+
+        else {
+            return Center(
+                child: CircularProgressIndicator(),
+            );
         }
     }
 
@@ -394,7 +401,6 @@ Widget _buildReturn(BuildContext context){
         if (!branches.containsKey(selectedOption)) {
             return defaultValue;
         }
-
         return branches[selectedOption];
     }
 
@@ -402,7 +408,7 @@ Widget _buildReturn(BuildContext context){
 
         List<PointLatLng> result = await
         polylinePoints?.getRouteBetweenCoordinates(
-            'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+            _googleApi,
             record.startLat,
             record.startLon,
             record.destinationLat,
