@@ -1,25 +1,22 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/utilisateur.dart';
 import 'package:app/homes/interfaces/data_management.dart';
 import 'package:app/widget/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:app/Models/firebaseRequest.dart';
 import 'package:app/Models/user.dart' as repo;
 import 'package:provider/provider.dart';
 import 'package:app/homes/interfaces/account.dart';
 import 'package:app/homes/interfaces/contact.dart';
 import 'package:app/homes/interfaces/myRequest.dart';
 import 'package:app/main.dart';
+import 'package:app/Models/keys.dart';
 
 class PassengerHome extends StatefulWidget {
     @override
@@ -32,24 +29,36 @@ class _PassengerHomeState extends State<PassengerHome> {
   PickResult selectedPlaceStart;
   PickResult selectedPlaceEnd;
 
-    Location location = new Location();
+  Location location = new Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
 
+  String _googleApi;
 
   Future<Uint8List> getMarker() async {
-    ByteData byteData =
-        await DefaultAssetBundle.of(context).load("assets/directon_icon.png");
-        return byteData.buffer.asUint8List();
-    }
+      ByteData byteData =
+      await DefaultAssetBundle.of(context).load("assets/directon_icon.png");
+      return byteData.buffer.asUint8List();
+  }
 
-    void pushPage(BuildContext context, Widget page) {
-        Navigator.of(context) /*!*/ .push(
-            MaterialPageRoute<void>(builder: (_) => page),
-        );
-    }
+  void pushPage(BuildContext context, Widget page) {
+      Navigator.of(context) /*!*/ .push(
+          MaterialPageRoute<void>(builder: (_) => page),
+      );
+  }
+
+  @override
+  void initState() {
+      super.initState();
+      Future<Secret> secret = SecretLoader(secretPath: "assets/secrets.json").load().then((value) {
+          setState(() {
+              _googleApi = value.apiKey;
+          });
+          return;
+      });
+  }
 
   Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
@@ -124,60 +133,12 @@ class _PassengerHomeState extends State<PassengerHome> {
       );
   }
 
-  Widget _buildPopUpData(BuildContext context) {
-      return new AlertDialog(
-          title: const Text('Voulez vous valider ce trajet ? '),
-          content: new Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                  Text("Départ : " + selectedPlaceStart.formattedAddress ?? ""),
-                  Text("Arrivée : " + selectedPlaceEnd.formattedAddress ?? ""),
-              ],
-          ),
-          actions: <Widget>[
-              new ElevatedButton(
-                  onPressed: () async {
-                      if (selectedPlaceStart != null && selectedPlaceEnd != null) {
-                          FirebaseRequest order = new FirebaseRequest(
-                              selectedPlaceStart.formattedAddress,
-                              selectedPlaceEnd.formattedAddress,
-                              selectedPlaceStart.geometry.location.lat,
-                              selectedPlaceStart.geometry.location.lng,
-                              selectedPlaceEnd.geometry.location.lat,
-                              selectedPlaceEnd.geometry.location.lng);
-                          await order.getName(FirebaseAuth.instance.currentUser.uid);
-                          DocumentReference ref = await FirebaseFirestore.instance
-                              .collection('requests')
-                              .add(order.toJson());
-                          Provider.of<repo.UserRepo>(this.context, listen: false)
-                              .connectedUtilisateur
-                              .requests
-                              .add(ref.id);
-                          Provider.of<repo.UserRepo>(this.context, listen: false)
-                              .updateRequestsUtilisateur();
-                      }
-                      Navigator.of(context).pop();
-                  },
-                  child: const Text('Valider'),
-              ),
-              new ElevatedButton(
-                  onPressed: () async {
-                      Navigator.of(context).pop();
-                  },
-                  child: const Text('Annuler'),
-              ),
-          ],
-      );
-  }
-
   final String description =
       " En plus d'être une plateforme de transport solidaire, MobiPA offre la possibilité de vous accompagner dans vos premières démarches. N'hésitez pas à nous poser vos questions ! ";
   final String description1 =
       "La nouvelle plateforme MobiPA est là pour aider au maximum les personnes agées dans le besoin à se déplacer sur des trajets court. ";
   String text = "blabla";
 
-  @override
   bool descTextShowFlag = false;
   bool descTextShowFlag1 = false;
 
@@ -203,7 +164,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                   }),
                               new ListTile(
                                   leading: new Icon(Icons.list),
-                                  title: Text('Mes trajets'),
+                                  title: Text('Mon trajet'),
                                   onTap: () {
                                       pushPage(context, MyRequest());
                                   }),
@@ -217,7 +178,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                           MaterialPageRoute(
                                               builder: (context) {
                                                   return PlacePicker(
-                                                      apiKey: 'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+                                                      apiKey: _googleApi,
                                                       initialPosition:
                                                       _PassengerHomeState.kInitialPosition,
                                                       useCurrentLocation: true,
@@ -232,8 +193,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                                               MaterialPageRoute(
                                                                   builder: (context) {
                                                                       return PlacePicker(
-                                                                          apiKey:
-                                                                          'AIzaSyADXtEYlr02LSSaESs4-tB2yGh0pdtPu0c',
+                                                                          apiKey: _googleApi,
                                                                           initialPosition: _PassengerHomeState
                                                                               .kInitialPosition,
                                                                           useCurrentLocation: true,
@@ -266,7 +226,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                   title: Text('Déconnexion'),
                                   onTap: () async {
                                       await FirebaseAuth.instance.signOut();
-                                      pushPage(context, AuthTypeSelector());
+                                      pushPage(context, Auth());
                                   },
                               ),
                           ]),

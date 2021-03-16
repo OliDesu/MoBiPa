@@ -1,21 +1,14 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/utilisateur.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:app/Models/firebaseRequest.dart';
-import 'package:app/Models/user.dart' as repo;
-import 'package:provider/provider.dart';
 import 'package:app/Models/driver.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui' as ui;
@@ -50,10 +43,10 @@ class _MyRequestState extends State<MyRequest> {
 
 
     @override
-  void initState() {
-    super.initState();
-    loadMarkers();
-  }
+    void initState() {
+        super.initState();
+        loadMarkers();
+    }
 
   void loadMarkers() async {
         mapsMarkerIcon = await getBytesFromAsset('assets/maps_marker.png', 100);
@@ -284,6 +277,13 @@ class _MyRequestState extends State<MyRequest> {
                 ),
             );
         }
+
+        else if (_status == Status.open) {
+            return Center(
+                child: CircularProgressIndicator(),
+            );
+        }
+
         else {
             return _buildReturn(context);
         }

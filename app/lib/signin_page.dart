@@ -43,34 +43,33 @@ class _SignInPageState extends State<SignInPage> {
                 final User user = _auth.currentUser;
                 if (user == null) {
                   Scaffold.of(context).showSnackBar(const SnackBar(
-                    content: Text('No one has signed in.'),
+                    content: Text('Vous n\'êtes pas connecté.'),
                   ));
                   return;
                 }
                 await _signOut();
 
-                final String uid = user.uid;
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('$uid has successfully signed out.'),
+                  content: Text('${user.email} est déconnecté.'),
                 ));
               },
-              child: const Text('Sign out'),
+              child: const Text('Déconnexion', style: TextStyle(color: Colors.deepPurpleAccent)),
             );
           })
         ],
       ),
-      body: Builder(builder: (BuildContext context) {
-        return ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-        Container(
-        child: new Column(children: [
-        Image(image: AssetImage('assets/signin.png')),
-        ])),
-            _EmailPasswordForm(),
-          ],
-        );
-      }),
+        body: Builder(builder: (BuildContext context) {
+            return ListView(
+                padding: const EdgeInsets.all(8),
+                children: <Widget>[
+                    Container(
+                        child: new Column(children: [
+                            Image(image: AssetImage('assets/signin.png')),
+                        ])),
+                    _EmailPasswordForm(),
+                ],
+            );
+        }),
     );
   }
 
@@ -99,8 +98,6 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-
-
         key: _formKey,
         child: Card(
           color: Color.fromRGBO(123, 75, 227, 1),
@@ -114,15 +111,17 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                   alignment: Alignment.center,
                   child: const Text(
                     'Connexion' ,style: TextStyle(color: Colors.white),
-
                   ),
                 ),
                 Text('\n'),
                 TextFormField(
-
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email',labelStyle: TextStyle(color: Colors.white)),
-                  style: TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: Colors.black),
+                      filled: true,
+                      fillColor: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre Email';
                     return null;
@@ -132,8 +131,12 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
 
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Mot de passe',labelStyle: TextStyle(color: Colors.white)),
-                  style: TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                      labelText: 'Mot de passe',
+                      labelStyle: TextStyle(color: Colors.black),
+                      filled: true,
+                      fillColor: Colors.white),
+                  style: TextStyle(color: Colors.black),
                   validator: (String value) {
                     if (value.isEmpty) return 'Veuillez entrer votre mot de passe';
                     return null;
@@ -153,26 +156,26 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(80.0)),
                           padding: EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Color(0xff6720fa), Color(0xff9670e6)],                        begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(30.0)),
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Suivant",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 15),
+                            child: Ink(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        colors: [Color(0xff6720fa), Color(0xff9670e6)],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Container(
+                                    constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                        "Suivant",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 15),
                               ),
                             ),
                           ),
                         ),
                       )
-
                   ),
                 ),
               ],
@@ -199,7 +202,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
 
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text('${user.email} signed in'),
+          content: Text('${user.email} connecté'),
         ),
       );
       // Ajouter le choix d'identification
@@ -227,7 +230,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to sign in with Email & Password'),
+          content: Text('Erreur de connexion'),
         ),
       );
     }

@@ -37,6 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
     File _cropped;
 
     bool _success;
+    bool _imageSuccess = false;
     String _userEmail = '';
 
     @override
@@ -54,6 +55,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Container(
                         width: kIsWeb ? 500 : MediaQuery.of(context).size.width * 0.9,
                         height: kIsWeb ? 800 : null,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.deepPurpleAccent,
+                        ),
                         child: _userForm(),
                     ),
                   ),
@@ -113,6 +118,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     return null;
                                 },
                             ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
+                            ),
                             TextFormField(
                                 controller: _passwordController,
                                 decoration: const InputDecoration(labelText: 'Mot de passe'),
@@ -123,6 +131,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     return null;
                                 },
                                 obscureText: true,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
                             ),
                             TextFormField(
                                 controller: _passwordConfirmController,
@@ -135,6 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 },
                                 obscureText: true,
                             ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
+                            ),
                             TextFormField(
                                 controller: _lastNameController,
                                 decoration: const InputDecoration(labelText: 'Nom de famille'),
@@ -144,6 +158,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     }
                                     return null;
                                 },
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
                             ),
                             TextFormField(
                                 controller: _firstNameController,
@@ -155,6 +172,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     return null;
                                 },
                             ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
+                            ),
                             TextFormField(
                                 controller: _phoneNumberController,
                                 decoration: const InputDecoration(labelText: 'Numéro de téléphone'),
@@ -164,6 +184,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     }
                                     return null;
                                 },
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
                             ),
                             DropdownButtonFormField(
                                 decoration: const InputDecoration(labelText: 'Quel type de compte'),
@@ -184,11 +207,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                     });
                                 },
                                 validator: (dynamic value) {
-                                    if (value.toString().isEmpty) {
+                                    if (value == null || value.toString().isEmpty) {
                                         return 'Veuillez indiquer le type de compte';
                                     }
                                     return null;
                                 },
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(top: 16),
                             ),
                             _cropped != null ? Image.file(_cropped, height: 100, width: 100,)
                                 :Container(),
@@ -201,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     icon: Icons.person_add,
                                     backgroundColor: Colors.deepPurpleAccent,
                                     onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState.validate() && _imageSuccess) {
                                             await _register();
                                         }
                                     },
@@ -214,8 +240,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: Text(_success == null
                                     ? ''
                                     : (_success
-                                    ? 'Successfully registered $_userEmail'
-                                    : 'Registration failed')),
+                                    ? 'Compte crée avec succès : $_userEmail'
+                                    : 'Erreur lors de la création du compte')),
                             )
                         ],
                     ),
@@ -240,6 +266,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
             this.setState(() {
                 _cropped = cropped;
+                _imageSuccess = true;
             });
         }
     }
