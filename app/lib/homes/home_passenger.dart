@@ -226,7 +226,7 @@ class _PassengerHomeState extends State<PassengerHome> {
                                   title: Text('Déconnexion'),
                                   onTap: () async {
                                       await FirebaseAuth.instance.signOut();
-                                      pushPage(context, Auth());
+                                      Navigator.of(context).pushNamedAndRemoveUntil('/auth', (Route<dynamic> route) => false);
                                   },
                               ),
                           ]),
