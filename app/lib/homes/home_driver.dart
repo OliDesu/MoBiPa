@@ -142,7 +142,7 @@ class _DriverHomeState extends State<DriverHome> {
                       title: Text('Déconnexion'),
                       onTap: () async {
                         await FirebaseAuth.instance.signOut();
-                        pushPage(context, Auth());
+                        Navigator.of(context).pushNamedAndRemoveUntil('/auth', (Route<dynamic> route) => false);
                       },
                     ),
                   ),

@@ -7,6 +7,13 @@ import 'package:provider/provider.dart';
 
 import './register_page.dart';
 import './signin_page.dart';
+import 'package:app/homes/home_driver.dart';
+import 'package:app/homes/home_passenger.dart';
+import 'package:app/homes/interfaces/account.dart';
+import 'package:app/homes/interfaces/contact.dart';
+import 'package:app/homes/interfaces/data_management.dart';
+import 'package:app/homes/interfaces/doRequest.dart';
+import 'package:app/homes/interfaces/myRequest.dart';
 
 import 'package:app/Models/user.dart';
 import 'package:app/Models/driverRepository.dart';
@@ -40,9 +47,19 @@ class MobiPaApp extends StatelessWidget {
       child: MaterialApp(
         title: 'MobiPA App',
         theme: theme,
-        home: Scaffold(
-          body: Auth(),
-        ),
+        initialRoute: '/auth',
+        routes: {
+            '/auth': (context) => Auth(),
+            '/login': (context) => SignInPage(),
+            '/register': (context) => RegisterPage(),
+            '/driverHome': (context) => DriverHome(),
+            '/passengerHome': (context) => PassengerHome(),
+            '/account': (context) => Account(),
+            '/contact': (context) => Contact(),
+            '/data': (context) => Data_Management(),
+            '/driverRequest': (context) => DoRequest(),
+            '/passengerRequest': (context) => MyRequest(),
+        },
       ),
     );
   }
