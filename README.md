@@ -12,8 +12,7 @@ Ceci est un projet de fin d'études réalisé par deux étudiants en 5ème anné
 
 <br/>
 <br/>
-En collaboration avec le personnel de l'UGA, le but était de créer une application de covoiturage solidaire pour la ville de La Mure permettant aux personnes à mobilité réduite ou âgées de se déplacer plus simplement. Ces personnes peuvent télécharger l'application, demander un déplacement et des conducteurs bénévoles peuvent répondre à ces requêtes après avoir téléchargé l'application également.
-<br/>
+En collaboration avec le personnel de l'UGA, le but était de créer une application de covoiturage solidaire pour la ville de La Mure permettant aux personnes à mobilité réduite ou âgées de se déplacer plus simplement. Ces personnes peuvent télécharger l'application, demander un déplacement et des conducteurs bénévoles peuvent répondre à ces requêtes après avoir téléchargé l'application également.<br/>
 
 Cette application est disponible sur Android, iOS et on propose même une solution Web pour ceux qui ne possèdent pas de smartphone. Le service est 100% gratuit et requiert juste la création d'un compte avec son adresse mail.
 <br/>
