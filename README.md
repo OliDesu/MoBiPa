@@ -69,12 +69,15 @@ Dans cette base de données nous avons divisé nos stockages en 3 parties :
 
 Ces dispositions ainsi que ces techniques nous ont permis d'agencer notre base de données.
 <br>
-Concernant les IDE que nous avons utilisé dans notre projet, nous avions commencé a coder sur Visual Studio   <img width="200" alt="vscode" src="https://framalibre.org/sites/default/files/styles/thumbnail/public/leslogos/Visual_Studio_Code_1.18_icon.png?itok=smeMcds3">
+Concernant les IDE que nous avons utilisé dans notre projet, nous avions commencé a coder sur Visual Studio   
+<br><img width="200" alt="vscode" src="https://framalibre.org/sites/default/files/styles/thumbnail/public/leslogos/Visual_Studio_Code_1.18_icon.png?itok=smeMcds3">
 
 Cet IDE nous a été utile au début car il offre une interface assez intéressante pour la gestion des dépendances de Flutter, seulement, on se retrouve assez limité au niveau des fonctionnalités et surtout au niveau de l’aperçu du code.
 
 Nous avons donc décidé de changer d'IDE et de passer sur Android Studio :
+<br>
 <img width="200" alt="androidstudi" src="https://2.bp.blogspot.com/-tzm1twY_ENM/XlCRuI0ZkRI/AAAAAAAAOso/BmNOUANXWxwc5vwslNw3WpjrDlgs9PuwQCLcBGAsYHQ/s1600/pasted%2Bimage%2B0.png">
+
 N'ayant pas tous les deux un téléphone Android, Android Studio offre la possibilité d'utiliser un émulateur de téléphone sous Android.
 De ce fait, les tests et l'implémentation de nouvelles fonctionnalités se font plus rapidement.
 ## Architecture technique
@@ -82,6 +85,21 @@ Concernant notre architecture, nous avons opté pour l'architecture suivante :
 <img width="900" alt="androidstudi" src="https://imgur.com/9aLlv9l.png">
 
 ## Réalisations techniques
+Durant ce projet nous avons réalisé les fonctionnalités techniques suivantes : 
+
+ -    Base de donnée distante Firebase
+-   Possibilité de s’inscrire et de se connecter en tant que passager et en tant que conducteur
+-   Affichage de tous les trajets disponibles pour un conducteur
+-   Prise en charge d’un trajet par le conducteur
+-   Création d’un trajet par le passager
+-   Possibilité de changer ses données personnelles
+-   Interface de contact
+-   Possibilité de choisir un lieu de rencontre spécifique
+ -   Interface responsive
+-   Possibilité de choisir avec une carte ou une adresse les lieux de rencontre
+-   Possibilité d’avoir une photo de profil pour chaque utilisateur
+-   Google Maps avec tracé du trajet
+
 ## Gestion de projet
 Concernant notre gestion de projet, vu que l'un d'entre nous était déjà familier avec les technologies que nous avons précisé précédemment, nous avons opté lors du début du projet pour du **Pair Programming**.
 Cette approche nous procuré énormément d'avantages comme le fait de pouvoir s'approprier les outils plus rapidement, le fait de pouvoir s'adapter à un nouveau environnement de travail et finalement de pouvoir apprendre à coder dans un langage inconnu assez rapidement.
@@ -108,6 +126,9 @@ Nous nous sommes par la suite organiser de telle sorte que notre projet puisse s
 	 Generation de l'APK
 	 Cacher les clés API 
 	 
+
+
+## Outils
  Concernant les outils d’organisation, nous avons utilisé l'outil de gestion de projet de Git.
  <img width="200" alt="git" src=" https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
 
@@ -120,9 +141,8 @@ Cela a ses avantages comme par exemple, une utilisation simplifiée, nos commits
 Cela nous permet de garder une trace de tout ce que l'on fait, sans pour autant s'encombrer avec un Trello en parallèle de notre Git.
 
 En plus de Git, afin de pouvoir communiquer l'un avec l'autre, nous avons aussi utilisé Discord
- <img width="200" alt="git" src=" https://cdn.icon-icons.com/icons2/2108/PNG/512/discord_icon_130958.png">
+ <img width="200" alt="discord" src=" https://cdn.icon-icons.com/icons2/2108/PNG/512/discord_icon_130958.png">
 
-## Outils
 ## Métriques logicielles
 ## Conclusion
 ## Transparent expliquant la démonstration
