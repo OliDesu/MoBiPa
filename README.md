@@ -143,7 +143,8 @@ Cela a ses avantages comme par exemple, une utilisation simplifiée, nos commits
 Cela nous permet de garder une trace de tout ce que l'on fait, sans pour autant s'encombrer avec un Trello en parallèle de notre Git.
 
 En plus de Git, afin de pouvoir communiquer l'un avec l'autre, nous avons aussi utilisé Discord
- <img width="200" alt="discord" src=" https://cdn.icon-icons.com/icons2/2108/PNG/512/discord_icon_130958.png">
+ <img width="200" alt="discord" src=" https://cdn.icon-icons.com/icons2/2108/PNG
+ /512/discord_icon_130958.png">
 
 ### Métriques logicielles
 <br/>
@@ -160,4 +161,18 @@ Là dessus, nous sommes à 50.82% de lignes de codes pour Ali et 49.18% pour Wil
 
 
 ## Conclusion
+Pour conclure notre projet, nous pouvons dire qu'il a été extrêmement intéressant que ce soit au niveau de la conception ou au niveau des technologies que nous avons utilisé.
+L'utilisation de Flutter et son apprentissage ont été très formateur pour l'ensemble de l'équipe et nous nous sentons prêt a réitérer l’expérience sur un nouveau projet.
+
+Le fait que notre groupe soit composé de deux personnes a aussi été une experience plus qu'interessante car nous avons du recourir a des techniques de gestion de projet qui sortent de l'ordinaire, comme par exemple le Pair Programming que nous avons évoqué précédemment.
+De plus, ce projet a été pour nous quelque chose de très important car très formateur, en effet, nous avons eu la chance de travailler sur un projet concret où nous pouvions directement interagir avec notre conception et de ce fait, cela a rendu le projet beaucoup plus interactif et agréable a traiter.
+
+Nous regrettons cependant de ne pas avoir eu plus de temps durant ce projet, ainsi que le fait que la plupart du projet s'est passé en distanciel, cela a, selon nous, ralentit l'avancement du groupe.
+
+Nous pouvons donc à partir de cela tirer quelques conclusions qui pourront nous être utiles pour nos projets à venir, à savoir faire plus de séances en présentiel, créer des maquettes en avance afin de pouvoir se baser dessus et ainsi avoir une interface encore plus optimisée mais aussi, nous devons apprendre a mieux gérer le temps impartit ainsi que nos sprints.
 ## Transparent expliquant la démonstration
+
+Pour notre démonstration, nous allons commencer par l'inscription d'un utilisateur en tant que passager, puis nous allons, avec ce même utilisateur, nous connecter.
+Nous allons ensuite procéder à la création d'une course car nous souhaitons allons au marcher de la Mure par exemple.
+Par la suite, nous allons nous connecter en tant que conducteur et prendre en charge la commande établie précédemment.
+Nous vous montrerons ensuite comment une course se déroule sur l'interface conducteur ainsi que sur l'interface passager et finalement, nous allons vous montrer la fin de course à savoir, une fois que le passager est déposé et qu'il y a eu une double validation de la course.
