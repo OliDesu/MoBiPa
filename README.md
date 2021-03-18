@@ -150,7 +150,7 @@ En plus de Git, afin de pouvoir communiquer l'un avec l'autre, nous avons aussi 
 Au niveau de la répartition des tâches nous sommes à peu près sur du 50/50. Comme nous ne sommes que deux et que nous avons une très bonne cohésion (ce qui est essentiel dans un groupe de travail) nous avons pu avancer à notre propre rythme sans conflit. On savait que chacun fournissait le travail requis et cela a porté ses fruits. On peut le voir sur la répartition du travail :
 <br/>
 
-##Lignes de codes
+## Lignes de codes
 
 Nous sommes à 2888 de lignes codées (nous ne comptons pas les lignes générées par Flutter).
 Au niveau des langages utilisées nous sommes à 99.5% de Dart et le reste c'est du généré, essentiellement du JSON, Java et du XML.
