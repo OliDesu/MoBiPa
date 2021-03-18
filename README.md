@@ -23,11 +23,15 @@ Ceci est un projet de fin d'études réalisé par deux étudiants en 5ème anné
 
 <br/>
 Pour développer notre application, nous avons choisi d'utiliser Flutter.
+
 <img width="200" alt="flutter" src="https://user-images.githubusercontent.com/46927019/111627534-6ff20e80-87ef-11eb-97a7-81726d6c530c.png">
+
 Nous avons fait le choix d'utiliser ce langage de programmation en particulier car il correspondait le plus à ce que l'on voulait atteindre, à savoir une application disponible sur toutes les plateformes, que ce soit Android ou IOS et qui ai aussi une alternative sur le web.
 De ce fait, Flutter nous semblait être le choix le plus adéquat car il nous permet grâce à un seul code généré de pouvoir obtenir ces 3 alternatives en même temps.
 De plus, Flutter a une documentation assez riche sur internet et il est très facile à prendre en main même pour des personnes qui n'ont jamais utilisé Dart au par avant. Ajouté à cela le fait qu'un grand catalogue d'extensions sont disponibles gratuitement et utilisables sans forcément altérer  le code précédemment généré.
 <br>
+
+
 Concernant le stockage de nos données, nous avons choisi d'utiliser FireBase.
 <img width="200" alt="flutter" src="https://firebase.google.com/images/brand-guidelines/logo-standard.png">
 <br>
@@ -64,3 +68,61 @@ Dans cette base de données nous avons divisé nos stockages en 3 parties :
 
 
 Ces dispositions ainsi que ces techniques nous ont permis d'agencer notre base de données.
+<br>
+Concernant les IDE que nous avons utilisé dans notre projet, nous avions commencé a coder sur Visual Studio   <img width="200" alt="vscode" src="https://framalibre.org/sites/default/files/styles/thumbnail/public/leslogos/Visual_Studio_Code_1.18_icon.png?itok=smeMcds3">
+
+Cet IDE nous a été utile au début car il offre une interface assez intéressante pour la gestion des dépendances de Flutter, seulement, on se retrouve assez limité au niveau des fonctionnalités et surtout au niveau de l’aperçu du code.
+
+Nous avons donc décidé de changer d'IDE et de passer sur Android Studio :
+<img width="200" alt="androidstudi" src="https://2.bp.blogspot.com/-tzm1twY_ENM/XlCRuI0ZkRI/AAAAAAAAOso/BmNOUANXWxwc5vwslNw3WpjrDlgs9PuwQCLcBGAsYHQ/s1600/pasted%2Bimage%2B0.png">
+N'ayant pas tous les deux un téléphone Android, Android Studio offre la possibilité d'utiliser un émulateur de téléphone sous Android.
+De ce fait, les tests et l'implémentation de nouvelles fonctionnalités se font plus rapidement.
+## Architecture technique
+Concernant notre architecture, nous avons opté pour l'architecture suivante :
+<img width="900" alt="androidstudi" src="https://imgur.com/9aLlv9l.png">
+
+## Réalisations techniques
+## Gestion de projet
+Concernant notre gestion de projet, vu que l'un d'entre nous était déjà familier avec les technologies que nous avons précisé précédemment, nous avons opté lors du début du projet pour du **Pair Programming**.
+Cette approche nous procuré énormément d'avantages comme le fait de pouvoir s'approprier les outils plus rapidement, le fait de pouvoir s'adapter à un nouveau environnement de travail et finalement de pouvoir apprendre à coder dans un langage inconnu assez rapidement.
+
+Nous nous sommes par la suite organiser de telle sorte que notre projet puisse se diviser en 3 grandes étapes : 
+
+ - Créations des outils de travail
+ 
+	Configuration de la base de donnée
+	Installation de Flutter sur les machines
+	
+ - Création des fonctionnalités principales de l'application
+
+	 Possibilité de créer un trajet
+	 Possibilité de prendre en charge un trajet 
+	 Interfaces différentes pour les conducteurs et pour les utilisateurs
+	 Pouvoir paramétrer son compte
+	 Pouvoir se déconnecter
+	 Pouvoir s'inscrire
+	 Pouvoir se connecter
+ - Ajout de détails dans l'application et rattraper un éventuel retard
+ 
+	 Refonte totale de l'interface graphique de l'application
+	 Generation de l'APK
+	 Cacher les clés API 
+	 
+ Concernant les outils d’organisation, nous avons utilisé l'outil de gestion de projet de Git.
+ <img width="200" alt="git" src=" https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+
+Cela a ses avantages comme par exemple, une utilisation simplifiée, nos commits, nos pull request et nos issues sont automatiques organisées et triées en 4 catégories : 
+
+ - To Do
+ - In Progress
+ - To Review
+ - Done
+Cela nous permet de garder une trace de tout ce que l'on fait, sans pour autant s'encombrer avec un Trello en parallèle de notre Git.
+
+En plus de Git, afin de pouvoir communiquer l'un avec l'autre, nous avons aussi utilisé Discord
+ <img width="200" alt="git" src=" https://cdn.icon-icons.com/icons2/2108/PNG/512/discord_icon_130958.png">
+
+## Outils
+## Métriques logicielles
+## Conclusion
+## Transparent expliquant la démonstration
