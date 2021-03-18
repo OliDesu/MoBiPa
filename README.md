@@ -146,5 +146,11 @@ En plus de Git, afin de pouvoir communiquer l'un avec l'autre, nous avons aussi 
  <img width="200" alt="discord" src=" https://cdn.icon-icons.com/icons2/2108/PNG/512/discord_icon_130958.png">
 
 ## Métriques logicielles
+<br/>
+Au niveau de la répartition des tâches nous sommes à peu près sur du 50/50. Comme nous ne sommes que deux et que nous avons une très bonne cohésion (ce qui est essentiel dans un groupe de travail) nous avons pu avancer à notre propre rythme sans conflit. On savait que chacun fournissait le travail requis et cela a porté ses fruits. On peut le voir sur la répartition du travail suivant : 
+<br/>
+![Capture du 2021-03-18 19-02-10](https://user-images.githubusercontent.com/46927019/111674608-7b0f6380-881c-11eb-892c-4cc2b09f029b.png)
+
+
 ## Conclusion
 ## Transparent expliquant la démonstration
