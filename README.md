@@ -130,7 +130,9 @@ Nous nous sommes par la suite organiser de telle sorte que notre projet puisse s
 
 ## Outils
  Concernant les outils d’organisation, nous avons utilisé l'outil de gestion de projet de Git.
- <img width="200" alt="git" src=" https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+ 
+ ![Capture du 2021-03-18 18-44-33](https://user-images.githubusercontent.com/46927019/111672477-4b5f5c00-881a-11eb-8767-8faf661e1822.png)
+
 
 Cela a ses avantages comme par exemple, une utilisation simplifiée, nos commits, nos pull request et nos issues sont automatiques organisées et triées en 4 catégories : 
 
