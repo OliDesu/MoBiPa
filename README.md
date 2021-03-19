@@ -8,7 +8,10 @@ Ceci est un projet de fin d'études réalisé par deux étudiants en 5ème anné
 <br/>
 <br/>
 
-*(Insérer nos photos avec noms)*
+![Capture du 2021-03-19 10-06-39](https://user-images.githubusercontent.com/46927019/111756789-e6981600-889a-11eb-93c7-bc7e37da54d0.png) William Nelson
+<br/>
+![Capture du 2021-03-19 10-06-58](https://user-images.githubusercontent.com/46927019/111756792-e861d980-889a-11eb-92a4-02613d427f98.png) Ali El Mufti
+
 
 <br/>
 <p>En collaboration avec le personnel de l'UGA, le but était de créer une application de covoiturage solidaire pour la ville de La Mure permettant aux personnes à mobilité réduite ou âgées de se déplacer plus simplement. Ces personnes peuvent télécharger l'application, demander un déplacement et des conducteurs bénévoles peuvent répondre à ces requêtes après avoir téléchargé l'application également.</p>
